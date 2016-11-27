@@ -39,8 +39,8 @@ describe('bridge-client', function () {
             var context = vm.createContext({
                 __uvm_emit: function (message) {
                     expect(arguments.length).be(1);
-                    expect(message).be.an('array');
-                    expect(message).be.eql(['event-name', 'event-arg']);
+                    expect(message).be.an('string');
+                    expect(message).be.eql(JSON.stringify(['event-name', 'event-arg']));
                     done();
                 }
             });
@@ -55,8 +55,8 @@ describe('bridge-client', function () {
             var context = vm.createContext({
                 __uvm_emit: function (message) {
                     expect(arguments.length).be(1);
-                    expect(message).be.an('array');
-                    expect(message).be.eql(['loopback-return', 'event-arg']);
+                    expect(message).be.an('string');
+                    expect(message).be.eql(JSON.stringify(['loopback-return', 'event-arg']));
                     done();
                 }
             });
