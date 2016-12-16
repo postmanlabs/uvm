@@ -1,5 +1,5 @@
 describe('uvm', function () {
-    var uvm = require('../../lib/uvm');
+    var uvm = require('../../lib');
 
     it('must connect a new context', function (done) {
         uvm.spawn({}, done);
@@ -22,7 +22,6 @@ describe('uvm', function () {
 
         it('must allow dispatching events to context', function () {
             var context = uvm.spawn();
-
 
             context.dispatch();
             context.dispatch('event-name');
