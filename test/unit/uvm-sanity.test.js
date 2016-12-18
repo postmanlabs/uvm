@@ -32,18 +32,18 @@ describe('uvm', function () {
             var sourceData = 'test',
                 context = uvm.spawn({
                     bootcode: `
-                        bridge.on('loopback', function (data) {
-                            bridge.dispatch('loopback', data);
+                        bridge.on('loopback2', function (data) {
+                            bridge.dispatch('loopback2', data);
                         });
                     `
                 });
 
-            context.on('loopback', function (data) {
-                expect(data).equal(sourceData);
+            context.on('loopback2', function (data) {
+                expect(data).be('test');
                 done();
             });
 
-            context.dispatch('loopback', sourceData);
+            context.dispatch('loopback2', sourceData);
         });
 
         ((typeof window === 'undefined') ? it : it.skip)('must pass load error on broken boot code', function (done) {
