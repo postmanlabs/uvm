@@ -1,5 +1,5 @@
 describe('uvm', function () {
-    var uvm = require('../../lib/uvm');
+    var uvm = require('../../lib');
 
     it('must connect a new context', function (done) {
         uvm.spawn({}, done);
@@ -23,7 +23,6 @@ describe('uvm', function () {
         it('must allow dispatching events to context', function () {
             var context = uvm.spawn();
 
-
             context.dispatch();
             context.dispatch('event-name');
             context.dispatch('event-name', 'event-arg');
@@ -32,7 +31,7 @@ describe('uvm', function () {
         it('must allow receiving events in context', function (done) {
             var sourceData = 'test',
                 context = uvm.spawn({
-                    bootcode: `
+                    bootCode: `
                         bridge.on('loopback', function (data) {
                             bridge.dispatch('loopback', data);
                         });
@@ -40,7 +39,7 @@ describe('uvm', function () {
                 });
 
             context.on('loopback', function (data) {
-                expect(data).equal(sourceData);
+                expect(data).be('test');
                 done();
             });
 
@@ -49,12 +48,12 @@ describe('uvm', function () {
 
         ((typeof window === 'undefined') ? it : it.skip)('must pass load error on broken boot code', function (done) {
             uvm.spawn({
-                bootcode: `
-                    throw new Error('error in bootcode');
+                bootCode: `
+                    throw new Error('error in bootCode');
                 `
             }, function (err) {
                 expect(err).be.an('object');
-                expect(err).have.property('message', 'error in bootcode');
+                expect(err).have.property('message', 'error in bootCode');
                 done();
             });
         });
