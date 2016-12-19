@@ -1,3 +1,5 @@
+var async = require('async');
+
 describe('uvm', function () {
     var uvm = require('../../lib');
 
@@ -55,6 +57,35 @@ describe('uvm', function () {
                 expect(err).be.an('object');
                 expect(err).have.property('message', 'error in bootCode');
                 done();
+            });
+        });
+
+        it('must not overflow dispatches when multiple vm is run', function (done) {
+            // create two vms
+            async.times(2, function (n, next) {
+                uvm.spawn({
+                    bootCode: `
+                        bridge.on('loopback', function (data) {
+                            bridge.dispatch('loopback', ${n}, data);
+                        });
+                    `
+                }, next);
+            }, function (err, contexts) {
+                if (err) { return done(err); }
+
+                contexts[0].on('loopback', function (source, data) {
+                    expect(source).be(0);
+                    expect(data).be('zero');
+
+                    setTimeout(done, 100); // wait for other events before going done
+                });
+
+                contexts[1].on('loopback', function () {
+                    expect.fail('second context receiving message overflowed from first');
+                });
+
+                contexts[0].dispatch('loopback', 'zero');
+
             });
         });
     });
