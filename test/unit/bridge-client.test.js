@@ -12,8 +12,8 @@ describe('bridge-client', function () {
     });
 
     it('must return a client with bootstrap in it', function () {
-        var bootcode = 'console.log("hi mocha");';
-        expect(bridgeClient(bootcode)).be.a('string').and.contain(bootcode);
+        var bootCode = 'console.log("hi mocha");';
+        expect(bridgeClient(bootCode)).be.a('string').and.contain(bootCode);
     });
 
     it('must be a valid JS code (syntax-wise)', function () {

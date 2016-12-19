@@ -6,7 +6,7 @@ describe('uvm timeout option', function () {
     ((typeof window === 'undefined') ? it : it.skip)('must exit if bootCode has infinite loop', function (done) {
         uvm.spawn({
             bootTimeout: 100,
-            bootcode: 'while(1) {}'
+            bootCode: 'while(1) {}'
         }, function (err, context) {
             expect(err).be.ok();
             expect(err).have.property('message', 'Script execution timed out.');
