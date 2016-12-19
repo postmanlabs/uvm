@@ -31,7 +31,7 @@ describe('uvm', function () {
         it('must allow receiving events in context', function (done) {
             var sourceData = 'test',
                 context = uvm.spawn({
-                    bootcode: `
+                    bootCode: `
                         bridge.on('loopback', function (data) {
                             bridge.dispatch('loopback', data);
                         });
@@ -48,12 +48,12 @@ describe('uvm', function () {
 
         ((typeof window === 'undefined') ? it : it.skip)('must pass load error on broken boot code', function (done) {
             uvm.spawn({
-                bootcode: `
-                    throw new Error('error in bootcode');
+                bootCode: `
+                    throw new Error('error in bootCode');
                 `
             }, function (err) {
                 expect(err).be.an('object');
-                expect(err).have.property('message', 'error in bootcode');
+                expect(err).have.property('message', 'error in bootCode');
                 done();
             });
         });

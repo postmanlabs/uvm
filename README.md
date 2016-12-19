@@ -9,7 +9,7 @@ var uvm = require('uvm');
 
 uvm.createHost({
     bootTimeout: 30 * 1000, // default 30s. set `undefined` for Infinity
-    bootcode: `bridge.on('ping', function () {
+    bootCode: `bridge.on('ping', function () {
         bridge.send('pong', Date.now())
     });'
 }, function (err, bridge) {
