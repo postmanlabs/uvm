@@ -12,8 +12,8 @@ describe('bridge-client', function () {
     });
 
     it('must return a client with bootstrap in it', function () {
-        var bootcode = 'console.log("hi mocha");';
-        expect(bridgeClient(bootcode)).be.a('string').and.contain(bootcode);
+        var bootCode = 'console.log("hi mocha");';
+        expect(bridgeClient(bootCode)).be.a('string').and.contain(bootCode);
     });
 
     it('must be a valid JS code (syntax-wise)', function () {
@@ -144,6 +144,61 @@ describe('bridge-client', function () {
                 });
 
                 bridge.emit('loopback');
+            `, context);
+        });
+
+        it('must not leave behind any additional globals except `bridge` related', function (done) {
+            var context = vm.createContext({
+                __uvm_emit: function () {
+                    throw new Error('Nothing should be emitted');
+                }
+            });
+            vm.runInContext(bridgeClient(), context);
+
+            expect(Object.keys(context).sort()).to.eql([
+                '__uvm_emit', '__uvm_dispatch', 'bridge'
+            ].sort());
+
+            done();
+        });
+
+        it('must work after the transport functions are removed from context externally', function (done) {
+            var context = vm.createContext({
+                expect: expect,
+                __uvm_emit: function (args) {
+                    expect(args).be('["test","context closures are working"]');
+                    done();
+                }
+            });
+
+            vm.runInContext(bridgeClient(), context);
+            vm.runInContext(`
+                bridge.on('loopback', function (data) {
+                    bridge.dispatch('loopback-return', data);
+                });
+            `, context);
+
+            expect(Object.keys(context).sort()).to.eql([
+                'expect', '__uvm_emit', '__uvm_dispatch', 'bridge'
+            ].sort());
+
+            // deleting stuff / setting to null
+            vm.runInContext(`
+                __uvm_emit = null;
+                __uvm_dispatch = null;
+            `, context);
+
+            // check they are deleted
+            vm.runInContext(`
+                expect(typeof __uvm_dispatch).not.be('undefined');
+                expect(__uvm_dispatch).be(null);
+                expect(typeof __uvm_emit).not.be('undefined');
+                expect(__uvm_emit).be(null);
+            `, context);
+
+            // dispatch an event now that the root variables are deleted
+            vm.runInContext(`
+                bridge.dispatch('test', 'context closures are working');
             `, context);
         });
     });
