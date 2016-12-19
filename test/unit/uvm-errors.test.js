@@ -16,12 +16,11 @@ describe('uvm errors', function () {
         context.disconnect(null);
     });
 
-    // @todo find a way to fix this
-    it('must fail to dispatch cyclic object', function (done) {
+    it('must dispatch cyclic object', function (done) {
         var context = uvm.spawn({
                 bootcode: `
-                    bridge.on('loopback', function (data) {
-                        bridge.dispatch('loopback', data);
+                    bridge.on('transfer', function (data) {
+                        bridge.dispatch('transfer', data);
                     });
                 `
             }),
@@ -29,17 +28,20 @@ describe('uvm errors', function () {
             cyclic,
             subcycle;
 
-        context.on('error', function (err) {
-            expect(err).be.ok();
-            expect(err).to.have.property('name', 'TypeError');
-            expect(err).to.have.property('message', 'Converting circular structure to JSON');
+        context.on('error', done);
+        context.on('transfer', function (data) {
+            expect(data).be.an('object');
+            expect(data).have.property('child');
+            expect(data.child).have.property('parent');
+            expect(data.child.parent).eql(data);
             done();
         });
 
+        // create a cyclic object
         cyclic = {};
-        subcycle = {c1: cyclic};
-        cyclic.c2 = subcycle;
+        subcycle = {parent: cyclic};
+        cyclic.child = subcycle;
 
-        context.dispatch('loopback', cyclic);
+        context.dispatch('transfer', cyclic);
     });
 });

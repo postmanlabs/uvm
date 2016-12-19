@@ -39,7 +39,7 @@ describe('uvm', function () {
                 });
 
             context.on('loopback', function (data) {
-                expect(data).equal(sourceData);
+                expect(data).be('test');
                 done();
             });
 
