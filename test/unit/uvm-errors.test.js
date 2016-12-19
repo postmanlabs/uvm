@@ -19,8 +19,8 @@ describe('uvm errors', function () {
     it('must dispatch cyclic object', function (done) {
         var context = uvm.spawn({
                 bootcode: `
-                    bridge.on('loopback', function (data) {
-                        bridge.dispatch('loopback', data);
+                    bridge.on('transfer', function (data) {
+                        bridge.dispatch('transfer', data);
                     });
                 `
             }),
@@ -29,7 +29,7 @@ describe('uvm errors', function () {
             subcycle;
 
         context.on('error', done);
-        context.on('loopback', function (data) {
+        context.on('transfer', function (data) {
             expect(data).be.an('object');
             expect(data).have.property('child');
             expect(data.child).have.property('parent');
@@ -42,6 +42,6 @@ describe('uvm errors', function () {
         subcycle = {parent: cyclic};
         cyclic.child = subcycle;
 
-        context.dispatch('loopback', cyclic);
+        context.dispatch('transfer', cyclic);
     });
 });
