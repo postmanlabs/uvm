@@ -44,4 +44,26 @@ describe('uvm errors', function () {
 
         context.dispatch('transfer', cyclic);
     });
+
+    it('must allow escape sequences in arguments to be dispatched', function (done) {
+        uvm.spawn({
+            bootCode: `
+                bridge.on('loopback', function (data) {
+                    bridge.dispatch('loopback', data);
+                });
+            `
+        }, function (err, context) {
+            expect(err).not.be.an('object');
+
+            context.on('error', done);
+            context.on('loopback', function (data) {
+                // eslint-disable-next-line no-useless-escape
+                expect(data).be('this has \n "escape" \'characters\"');
+                done();
+            });
+
+            // eslint-disable-next-line no-useless-escape
+            context.dispatch('loopback', 'this has \n "escape" \'characters\"');
+        });
+    });
 });
