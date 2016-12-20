@@ -88,5 +88,30 @@ describe('uvm', function () {
 
             });
         });
+
+        it('must restore dispatcher if it is deleted', function (done) {
+            uvm.spawn({
+                bootCode: `
+                    bridge.on('deleteDispatcher', function () {
+                        __uvm_dispatch = null;
+                    });
+
+                    bridge.on('loopback', function (data) {
+                        bridge.dispatch('loopback', data);
+                    });
+                `
+            }, function (err, context) {
+                expect(err).not.be.an('object');
+
+                context.on('error', done);
+                context.on('loopback', function (data) {
+                    expect(data).be('this returns');
+                    done();
+                });
+
+                context.dispatch('deleteDispatcher');
+                context.dispatch('loopback', 'this returns');
+            });
+        });
     });
 });
