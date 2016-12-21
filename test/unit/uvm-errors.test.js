@@ -45,6 +45,29 @@ describe('uvm errors', function () {
         context.dispatch('transfer', cyclic);
     });
 
+    it('must not allow bridge raw interfaces to be accessed', function (done) {
+        uvm.spawn({
+            bootCode: `
+                bridge.on('probe', function () {
+                    bridge.dispatch('result', {
+                        typeofEmitter: typeof __uvm_emit,
+                        typeofDispatcher: typeof __uvm_dispatch
+                    });
+                });
+            `
+        }, function (err, context) {
+            if (err) { return done(err); }
+            context.on('error', done);
+            context.on('result', function (test) {
+                expect(test).be.an('object');
+                expect(test).not.have.property('typeofEmitter', 'function');
+                expect(test).not.have.property('typeofDispatcher', 'function');
+                done();
+            });
+            context.dispatch('probe');
+        });
+    });
+
     it('must allow escape sequences in arguments to be dispatched', function (done) {
         uvm.spawn({
             bootCode: `
