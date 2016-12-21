@@ -8,7 +8,8 @@ Module that exposes an event emitter to send data across contexts (vm in node an
 var uvm = require('uvm');
 
 uvm.createHost({
-    bootstrap: `bridge.on('ping', function () {
+    bootTimeout: 30 * 1000, // default 30s. set `undefined` for Infinity
+    bootCode: `bridge.on('ping', function () {
         bridge.send('pong', Date.now())
     });'
 }, function (err, bridge) {
