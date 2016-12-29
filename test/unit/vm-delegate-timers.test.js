@@ -97,7 +97,7 @@
 
                 context.compute = function () {
                     expect(intervals).to.have.property('length', 2);
-                    expect(intervals[1] - intervals[0]).be.above(20).and.below(45);
+                    expect(intervals[1] - intervals[0]).be.within(20, 45);
                     done();
                 };
 
