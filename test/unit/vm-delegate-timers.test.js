@@ -43,7 +43,7 @@
                 var startTime = Date.now();
 
                 context.done = function () {
-                    expect(Date.now() - startTime).be.above(99);
+                    expect(Date.now() - startTime).be.above(95);
                     done();
                 };
                 vm.runInContext(`
@@ -64,7 +64,7 @@
                 var startTime = Date.now();
 
                 context.done = function () {
-                    expect(Date.now() - startTime).be.above(99);
+                    expect(Date.now() - startTime).be.above(95);
                     done();
                 };
                 vm.runInContext(`
@@ -97,7 +97,7 @@
 
                 context.compute = function () {
                     expect(intervals).to.have.property('length', 2);
-                    expect(intervals[1] - intervals[0]).be.above(24).and.below(50);
+                    expect(intervals[1] - intervals[0]).be.above(20).and.below(45);
                     done();
                 };
 

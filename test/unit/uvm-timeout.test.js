@@ -1,9 +1,9 @@
-describe('uvm timeout option', function () {
+((typeof window === 'undefined') ? describe : describe.skip)('uvm timeout option', function () {
     var uvm = require('../../lib');
 
     // options.bootTimeout is not implemented in browser sandbox. Reason is that as long as we use iFrame, there is no
     // way to interrupt an infinite loop.
-    ((typeof window === 'undefined') ? it : it.skip)('must exit if bootCode has infinite loop', function (done) {
+    it('must exit if bootCode has infinite loop', function (done) {
         uvm.spawn({
             bootTimeout: 100,
             bootCode: 'while(1) {}'
@@ -17,7 +17,7 @@ describe('uvm timeout option', function () {
 
     // options.dispatchTimeout is not implemented in browser sandbox. Reason is that as long as we use iFrame, there is
     // no way to interrupt an infinite loop.
-    ((typeof window === 'undefined') ? it : it.skip)('must exit if dispatch is has infinite loop', function (done) {
+    it('must exit if dispatch is has infinite loop', function (done) {
         uvm.spawn({
             dispatchTimeout: 100,
             bootCode: `
