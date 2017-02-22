@@ -1,4 +1,4 @@
-# Contributing to Postman Collection SDK
+# Contributing to Postman UVM
 
 ## Command Reference
 
