@@ -113,5 +113,30 @@ describe('uvm', function () {
                 context.dispatch('loopback', 'this returns');
             });
         });
+
+        it('must trigger error if dispatched post disconnection', function (done) {
+            uvm.spawn({
+                bootCode: `
+                    bridge.on('loopback', function (data) {
+                        bridge.dispatch('loopback', data);
+                    });
+                `
+            }, function (err, context) {
+                expect(err).not.be.an('object');
+
+                context.on('error', function (err) {
+                    expect(err).be.ok();
+                    expect(err).have.property('message', 'uvm: unable to dispatch "loopback" post disconnection.');
+                    done();
+                });
+
+                context.on('loopback', function () {
+                    throw new Error('loopback callback was unexpected post disconnection');
+                });
+
+                context.disconnect();
+                context.dispatch('loopback', 'this never returns');
+            });
+        });
     });
 });
