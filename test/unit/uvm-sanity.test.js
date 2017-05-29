@@ -138,5 +138,21 @@ describe('uvm', function () {
                 context.dispatch('loopback', 'this never returns');
             });
         });
+
+        it('must trigger disconnection event before disconnecting', function (done) {
+            uvm.spawn({
+                bootCode: `
+                    bridge.on('disconnect', function () {
+                        bridge.dispatch('disconnect.ack');
+                    });
+                `
+            }, function (err, context) {
+                expect(err).not.be.an('object');
+
+                context.on('error', done);
+                context.on('disconnect.ack', done);
+                context.disconnect();
+            });
+        });
     });
 });
