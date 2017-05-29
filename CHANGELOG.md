@@ -1,5 +1,8 @@
 # Postman UVM Changelog
 
+#### Unreleased
+* add support for removal of bridge events (internal)
+
 #### 1.5.1 (May 29, 2017)
 * uvm now dispatches `disconnect` event right before disconnecting
 
