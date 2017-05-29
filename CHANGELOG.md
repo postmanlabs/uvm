@@ -1,5 +1,11 @@
 # Postman UVM Changelog
 
+#### Unreleased
+* uvm now dispatches `disconnect` event right before disconnecting
+
+#### 1.5.0 (March 22, 2017)
+* Edge case error handling for greater stability
+
 #### 1.4.0 (December 27, 2016)
 * Delegate timers to Node VM
 * :art: Unified the way code looks while delegating clear and set VM timers.

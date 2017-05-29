@@ -1,4 +1,5 @@
-var async = require('async');
+var async = require('async'),
+    isNode = (typeof window === 'undefined');
 
 describe('uvm', function () {
     var uvm = require('../../lib');
@@ -48,7 +49,7 @@ describe('uvm', function () {
             context.dispatch('loopback', sourceData);
         });
 
-        ((typeof window === 'undefined') ? it : it.skip)('must pass load error on broken boot code', function (done) {
+        (isNode ? it : it.skip)('must pass load error on broken boot code', function (done) {
             uvm.spawn({
                 bootCode: `
                     throw new Error('error in bootCode');
@@ -136,6 +137,22 @@ describe('uvm', function () {
 
                 context.disconnect();
                 context.dispatch('loopback', 'this never returns');
+            });
+        });
+
+        (isNode ? it : it.skip)('must trigger disconnection event before disconnecting in node', function (done) {
+            uvm.spawn({
+                bootCode: `
+                    bridge.on('disconnect', function () {
+                        bridge.dispatch('disconnect.ack');
+                    });
+                `
+            }, function (err, context) {
+                expect(err).not.be.an('object');
+
+                context.on('error', done);
+                context.on('disconnect.ack', done);
+                context.disconnect();
             });
         });
     });
