@@ -1,6 +1,6 @@
 # Postman UVM Changelog
 
-#### Unreleased
+#### 1.5.1 (May 29, 2017)
 * uvm now dispatches `disconnect` event right before disconnecting
 
 #### 1.5.0 (March 22, 2017)
