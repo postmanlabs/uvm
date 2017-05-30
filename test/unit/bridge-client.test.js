@@ -147,6 +147,52 @@ describe('bridge-client', function () {
             `, context);
         });
 
+        it('must be able to remove a particular registered event', function (done) {
+            var context = vm.createContext({
+                expect: expect,
+                __uvm_emit: function () {
+                    throw new Error('Nothing should be emitted');
+                },
+                done: function () {
+                    expect(arguments.length).be(0);
+                    done();
+                }
+            });
+
+            vm.runInContext(bridgeClient(), context);
+
+            vm.runInContext(`
+                var one = false,
+                    two = false,
+
+                    updateTwo;
+
+                bridge.on('loopback', function () {
+                    expect(one).be(false);
+                    expect(two).be(false);
+
+                    one = true;
+                });
+
+                updateTwo = function () {
+                    expect(one).be(true);
+                    expect(two).be(false);
+                    two = true;
+                };
+                bridge.on('loopback', updateTwo);
+
+                bridge.on('loopback', function () {
+                    expect(one).be(true);
+                    expect(two).be(false);
+
+                    done();
+                });
+
+                bridge.off('loopback', updateTwo); // remove one event
+                bridge.emit('loopback');
+            `, context);
+        });
+
         it('must not leave behind any additional globals except `bridge` related', function (done) {
             var context = vm.createContext({
                 __uvm_emit: function () {
