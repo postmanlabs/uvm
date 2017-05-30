@@ -1,6 +1,6 @@
 {
   "name": "uvm",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Universal Virtual Machine for Node and Browser",
   "main": "index.js",
   "directories": {
