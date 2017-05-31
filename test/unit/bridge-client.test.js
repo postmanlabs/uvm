@@ -193,6 +193,59 @@ describe('bridge-client', function () {
             `, context);
         });
 
+        it('must be able to remove all events of a name', function (done) {
+            var context = vm.createContext({
+                expect: expect,
+                assertion: {
+                    one: 0,
+                    two: 0
+                },
+                __uvm_emit: function () {
+                    throw new Error('Nothing should be emitted');
+                },
+                done: function (err) {
+                    expect(err).to.not.be.ok();
+
+                    expect(context).to.have.property('assertion');
+                    expect(context.assertion).to.eql({
+                        one: 1,
+                        two: 0
+                    });
+                    done();
+                }
+            });
+
+            vm.runInContext(bridgeClient(), context);
+
+            // run a code that listens to same event
+            // and makes changes to a global object`
+            vm.runInContext(`
+                /* global assertion, done */
+
+                bridge.on('loopback', function () {
+                    expect(assertion.one).be(0);
+                    expect(assertion.two).be(0);
+
+                    assertion.one += 1;
+                });
+
+                bridge.emit('loopback');
+
+                bridge.on('loopback', function () {
+                    expect(assertion.one).be(1);
+                    expect(assertion.two).be(0);
+
+                    assertion.one += 1;
+                    assertion.two += 1;
+                    done('error');
+                });
+
+                bridge.off('loopback'); // remove all events
+                bridge.emit('loopback');
+                done();
+            `, context);
+        });
+
         it('must not leave behind any additional globals except `bridge` related', function (done) {
             var context = vm.createContext({
                 __uvm_emit: function () {
