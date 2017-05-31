@@ -1,6 +1,7 @@
 # Postman UVM Changelog
 
 #### Unreleased
+* removed dispatch of `disconnect` event when .disconnect() is called
 * add ability to remove all events when only event name is provided to `bridge.off`
 
 #### 1.6.0 (May 30, 2017)
