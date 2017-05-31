@@ -139,21 +139,5 @@ describe('uvm', function () {
                 context.dispatch('loopback', 'this never returns');
             });
         });
-
-        (isNode ? it : it.skip)('must trigger disconnection event before disconnecting in node', function (done) {
-            uvm.spawn({
-                bootCode: `
-                    bridge.on('disconnect', function () {
-                        bridge.dispatch('disconnect.ack');
-                    });
-                `
-            }, function (err, context) {
-                expect(err).not.be.an('object');
-
-                context.on('error', done);
-                context.on('disconnect.ack', done);
-                context.disconnect();
-            });
-        });
     });
 });
