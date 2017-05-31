@@ -1,5 +1,8 @@
 # Postman UVM Changelog
 
+#### Unreleased
+* removed dispatch of `disconnect` event when .disconnect() is called
+
 #### 1.6.0 (May 30, 2017)
 * add support for removal of bridge events (internal) using `bridge.off`
 
