@@ -1,4 +1,5 @@
-var async = require('async');
+var async = require('async'),
+    isNode = (typeof window === 'undefined');
 
 describe('uvm', function () {
     var uvm = require('../../lib');
@@ -48,7 +49,7 @@ describe('uvm', function () {
             context.dispatch('loopback', sourceData);
         });
 
-        ((typeof window === 'undefined') ? it : it.skip)('must pass load error on broken boot code', function (done) {
+        (isNode ? it : it.skip)('must pass load error on broken boot code', function (done) {
             uvm.spawn({
                 bootCode: `
                     throw new Error('error in bootCode');
