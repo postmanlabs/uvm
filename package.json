@@ -49,7 +49,7 @@
     "karma-chrome-launcher": "2.1.1",
     "karma-mocha": "1.3.0",
     "karma-mocha-reporter": "2.2.3",
-    "mocha": "3.3.0",
+    "mocha": "3.4.0",
     "nsp": "2.6.3",
     "packity": "0.3.2",
     "parse-gitignore": "0.4.0",
