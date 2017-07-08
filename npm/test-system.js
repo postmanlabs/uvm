@@ -47,7 +47,7 @@ module.exports = function (exit) {
             });
         },
 
-         // packity
+        // packity
         function (next) {
             var packity = require('packity'),
                 options = {
