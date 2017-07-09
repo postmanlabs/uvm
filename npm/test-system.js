@@ -32,7 +32,10 @@ module.exports = function (exit) {
         // run test specs using mocha
         function (next) {
             recursive(SPEC_SOURCE_DIR, function (err, files) {
-                if (err) { console.error(err.stack || err); return next(1); }
+                if (err) {
+                    console.error(err.stack || err);
+                    return next(1);
+                }
 
                 var mocha = new Mocha();
 
@@ -47,7 +50,7 @@ module.exports = function (exit) {
             });
         },
 
-         // packity
+        // packity
         function (next) {
             var packity = require('packity'),
                 options = {
