@@ -23,7 +23,7 @@ module.exports = function (exit) {
     recursive(SPEC_SOURCE_DIR, function (err, files) {
         if (err) { console.error(err); return exit(1); }
 
-        var mocha = new Mocha({timeout: 1000 * 60});
+        var mocha = new Mocha({ timeout: 1000 * 60 });
 
         // specially load bootstrap file
         mocha.addFile(path.join(SPEC_SOURCE_DIR, '_bootstrap.js'));
