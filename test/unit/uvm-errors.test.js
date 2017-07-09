@@ -39,7 +39,7 @@ describe('uvm errors', function () {
 
         // create a cyclic object
         cyclic = {};
-        subcycle = {parent: cyclic};
+        subcycle = { parent: cyclic };
         cyclic.child = subcycle;
 
         context.dispatch('transfer', cyclic);
