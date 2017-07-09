@@ -33,7 +33,7 @@ describe('travis.yml', function () {
         });
 
         it('should use Google Chrome as an added package', function () {
-            expect(travisYAML.addons).to.eql({apt: {packages: ['google-chrome-stable']}});
+            expect(travisYAML.addons).to.eql({ apt: { packages: ['google-chrome-stable'] } });
         });
 
         it('should have a valid before_install sequence', function () {
