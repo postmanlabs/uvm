@@ -6,7 +6,7 @@
 
 require('shelljs/global');
 
-var colors = require('colors/safe'),
+var colors = require('chalk'),
     path = require('path'),
 
     KARMA_CONFIG_PATH = path.join(__dirname, '..', 'test', 'karma.conf');
