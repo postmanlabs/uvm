@@ -56,7 +56,7 @@
     "parse-gitignore": "0.4.0",
     "recursive-readdir": "2.2.1",
     "shelljs": "0.8.1",
-    "watchify": "3.9.0"
+    "watchify": "3.10.0"
   },
   "repository": {
     "type": "git",
