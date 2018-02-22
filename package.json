@@ -54,7 +54,7 @@
     "nyc": "11.4.1",
     "packity": "0.3.2",
     "parse-gitignore": "0.4.0",
-    "recursive-readdir": "2.2.1",
+    "recursive-readdir": "2.2.2",
     "shelljs": "0.8.1",
     "watchify": "3.10.0"
   },
