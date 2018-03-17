@@ -35,7 +35,7 @@
     "browserify": "15.2.0",
     "chalk": "2.3.2",
     "editorconfig": "0.15.0",
-    "eslint": "4.18.2",
+    "eslint": "4.19.0",
     "eslint-plugin-jsdoc": "3.5.0",
     "eslint-plugin-lodash": "2.6.1",
     "eslint-plugin-mocha": "4.12.0",
