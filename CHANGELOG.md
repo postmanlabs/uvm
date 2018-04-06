@@ -1,5 +1,8 @@
 # Postman UVM Changelog
 
+#### v1.7.1 (April 6, 2018)
+* :bug: Use `srcdoc` attribute in `iframe`, when available, for loading sandbox code browser environments
+
 #### 1.7.0 (May 31, 3017)
 * removed dispatch of `disconnect` event when .disconnect() is called
 * add ability to remove all events when only event name is provided to `bridge.off`

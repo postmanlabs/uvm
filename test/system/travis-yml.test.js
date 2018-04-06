@@ -29,11 +29,11 @@ describe('travis.yml', function () {
 
         it('should have the language set to node', function () {
             expect(travisYAML.language).to.be('node_js');
-            expect(travisYAML.node_js).to.eql(['6', '4']);
+            expect(travisYAML.node_js).to.eql(['4', '6', '8']);
         });
 
         it('should use Google Chrome as an added package', function () {
-            expect(travisYAML.addons).to.eql({apt: {packages: ['google-chrome-stable']}});
+            expect(travisYAML.addons).to.eql({ apt: { packages: ['google-chrome-stable'] } });
         });
 
         it('should have a valid before_install sequence', function () {

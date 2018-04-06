@@ -5,17 +5,17 @@
 /* eslint-env node, es6 */
 
 require('shelljs/global');
-require('colors');
 
 // set directories and files for test and coverage report
 var path = require('path'),
+    chalk = require('chalk'),
     recursive = require('recursive-readdir'),
 
     SPEC_SOURCE_DIR = path.join(__dirname, '..', 'test', 'integration');
 
 module.exports = function (exit) {
     // banner line
-    console.log('Running integration tests using mocha on node...'.yellow.bold);
+    console.log(chalk.yellow.bold('Running integration tests using mocha on node...'));
 
     var Mocha = require('mocha');
 
@@ -23,7 +23,7 @@ module.exports = function (exit) {
     recursive(SPEC_SOURCE_DIR, function (err, files) {
         if (err) { console.error(err); return exit(1); }
 
-        var mocha = new Mocha({timeout: 1000 * 60});
+        var mocha = new Mocha({ timeout: 1000 * 60 });
 
         // specially load bootstrap file
         mocha.addFile(path.join(SPEC_SOURCE_DIR, '_bootstrap.js'));

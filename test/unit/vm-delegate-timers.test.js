@@ -159,9 +159,10 @@
     });
 
     it('should not leave the original timer function exposed in global (security)', function (done) {
-        var context = delegateTimers(vm.createContext({expect: expect}));
+        var context = delegateTimers(vm.createContext({ expect: expect }));
 
         context.done = function (err, res) {
+            expect(err).to.be(null);
             expect(res).be.an('object');
             expect(res.typeOf).have.property('setTimeout_', 'undefined');
             expect(res.typeOf).have.property('setInterval_', 'undefined');
@@ -187,7 +188,7 @@
     });
 
     it('should not allow access to original context from setter (security)', function (done) {
-        var context = delegateTimers(vm.createContext({expect: expect}));
+        var context = delegateTimers(vm.createContext({ expect: expect }));
 
         context.done = function () {
             expect(Function).not.have.property('setFromVM');
@@ -205,7 +206,7 @@
     });
 
     it('should not allow access from setter returned objects (security)', function (done) {
-        var context = delegateTimers(vm.createContext({expect: expect}));
+        var context = delegateTimers(vm.createContext({ expect: expect }));
 
         context.done = function () {
             expect(Object).not.have.property('setFromVM');
