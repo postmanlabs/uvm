@@ -1,5 +1,8 @@
 # Postman UVM Changelog
 
+#### v1.7.2 (April 25, 2018)
+* Updated dependencies :arrow_up:
+
 #### v1.7.1 (April 6, 2018)
 * :bug: Use `srcdoc` attribute in `iframe`, when available, for loading sandbox code browser environments
 
