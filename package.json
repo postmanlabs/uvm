@@ -51,7 +51,7 @@
     "karma-mocha-reporter": "2.2.5",
     "mocha": "5.1.1",
     "nsp": "2.8.1",
-    "nyc": "11.7.2",
+    "nyc": "11.8.0",
     "packity": "0.3.2",
     "parse-gitignore": "0.4.0",
     "recursive-readdir": "2.2.2",
