@@ -1,5 +1,8 @@
 # Postman UVM Changelog
 
+#### v1.7.3 (May 23, 2018)
+* Updated dependencies :arrow_up:
+
 #### v1.7.2 (April 25, 2018)
 * Updated dependencies :arrow_up:
 
