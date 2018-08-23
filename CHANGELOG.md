@@ -1,5 +1,9 @@
 # Postman UVM Changelog
 
+### Unreleased
+- updated circular json dependency
+- housekeeping to remove nsp
+
 #### v1.7.3 (May 23, 2018)
 * Updated dependencies :arrow_up:
 
