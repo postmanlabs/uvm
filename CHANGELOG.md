@@ -1,5 +1,9 @@
 # Postman UVM Changelog
 
+#### v1.7.4 (September 21, 2018)
+- Updated circular-json and other dependencies
+- Housekeeping to remove nsp
+
 #### v1.7.3 (May 23, 2018)
 * Updated dependencies :arrow_up:
 
