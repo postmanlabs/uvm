@@ -8,6 +8,7 @@ var recursive = require('recursive-readdir'),
 
     chalk = require('chalk'),
     async = require('async'),
+    expect = require('chai').expect,
     Mocha = require('mocha'),
 
     SPEC_SOURCE_DIR = path.join(__dirname, '..', 'test', 'system');
@@ -31,10 +32,18 @@ module.exports = function (exit) {
                     return (file.substr(-8) === '.test.js');
                 }).forEach(mocha.addFile.bind(mocha));
 
+                // start the mocha run
+                global.expect = expect; // for easy reference
+
                 mocha.run(function (err) {
+                    // clear references and overrides
+                    delete global.expect;
+
                     err && console.error(err.stack || err);
                     next(err ? 1 : 0);
                 });
+                // cleanup
+                mocha = null;
             });
         },
 
