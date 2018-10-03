@@ -10,7 +10,6 @@ var editorconfig = require('editorconfig'),
      */
     TAB_WIDTH = 4;
 
-/* global describe, it, expect */
 describe('.editorconfig', function () {
     var config = editorconfig.parseSync('.editorconfig'); // eslint-disable-line no-sync
 
@@ -31,10 +30,10 @@ describe('.editorconfig', function () {
     });
 
     it('should have a truthy insert_final_newline value', function () {
-        expect(config.insert_final_newline).to.equal(true);
+        expect(config.insert_final_newline, 'Should insert final line').to.be.true;
     });
 
     it('should have a truthy trim_trailing_whitespace', function () {
-        expect(config.trim_trailing_whitespace).to.equal(true);
+        expect(config.trim_trailing_whitespace, 'Should trim trailing whitespace').to.be.true;
     });
 });
