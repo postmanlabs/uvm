@@ -3,10 +3,9 @@
  * on the content of the file as well. Any change to .jsdoc-config.json must be accompanied by valid test case in this
  * spec-sheet.
  */
-/* global describe, it, expect */
+
 describe('JSDoc configuration', function () {
     var fs = require('fs'),
-        _ = require('lodash'),
 
         json,
         content,
@@ -17,16 +16,16 @@ describe('JSDoc configuration', function () {
     });
 
     it('should have readable content', function () {
-        expect(content = fs.readFileSync(jsdocConfigPath).toString()).to.be.ok;
+        expect(content = fs.readFileSync(jsdocConfigPath).toString(), 'Should have readable content').to.be.ok;
     });
 
     it('should have valid JSON content', function () {
-        expect(json = JSON.parse(content)).to.be.ok;
+        expect(json = JSON.parse(content), 'Should have valid JSON content').to.be.ok;
     });
 
     describe('tags', function () {
-        it('should allow unkown tags', function () {
-            expect(json.tags.allowUnknownTags).to.be.ok;
+        it('should allow unknown tags', function () {
+            expect(json.tags.allowUnknownTags, 'Should allow unknown tags').to.be.ok;
         });
 
         it('should have jsdoc and closure dictionaries', function () {
@@ -46,17 +45,17 @@ describe('JSDoc configuration', function () {
 
     describe('plugins', function () {
         it('should have the markdown plugin', function () {
-            expect(_.includes(json.plugins, 'plugins/markdown')).to.be.ok;
+            expect(json.plugins, 'Should use the markdown plugin').to.include('plugins/markdown');
         });
     });
 
     describe('templates', function () {
         it('should not have clever links', function () {
-            expect(json.templates.cleverLinks).to.not.be.ok;
+            expect(json.templates.cleverLinks).to.be.false;
         });
 
         it('should not have monospace links', function () {
-            expect(json.templates.monospaceLinks).to.not.be.ok;
+            expect(json.templates.monospaceLinks).to.be.false;
         });
 
         it('should highlight tutorial code', function () {
@@ -82,17 +81,17 @@ describe('JSDoc configuration', function () {
         });
 
         it('should have a valid readme', function () {
-            expect(json.opts.readme).to.equal('README.md');
+            expect(json.opts.readme, 'Should use a valid readme').to.equal('README.md');
         });
     });
 
     describe('markdown', function () {
         it('should have a gfm parser', function () {
-            expect(json.markdown.parser).to.equal('gfm');
+            expect(json.markdown.parser, 'Should use the gfm markdown parser').to.equal('gfm');
         });
 
         it('should have jsdoc and closure dictionaries', function () {
-            expect(json.markdown.hardwrap).to.not.be.ok;
+            expect(json.markdown.hardwrap).to.be.false;
         });
     });
 });
