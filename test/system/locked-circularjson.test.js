@@ -1,5 +1,3 @@
-/* global describe, it, expect */
-
 // There is a string variant of the library in bridge-client.js
 describe('circular-json dependency', function () {
     // To update circular-json, the package needs to be updated and then post installing circular-json, one needs to
