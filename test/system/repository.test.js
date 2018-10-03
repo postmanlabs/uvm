@@ -5,7 +5,6 @@
 var _ = require('lodash'),
     parseIgnore = require('parse-gitignore');
 
-/* global describe, it, expect */
 describe('project repository', function () {
     var fs = require('fs');
 
@@ -18,19 +17,21 @@ describe('project repository', function () {
         });
 
         it('should have readable JSON content', function () {
-            expect(content = fs.readFileSync('./package.json').toString()).to.be.ok;
+            expect(content = fs.readFileSync('./package.json').toString(), 'Should have readable content').to.be.ok;
         });
 
         it('should have valid JSON content', function () {
-            expect(json = JSON.parse(content)).to.be.ok;
+            expect(json = JSON.parse(content), 'Should have valid JSON content').to.be.ok;
         });
 
         describe('package.json JSON data', function () {
-            it('should have valid name, description and author', function () {
-                expect(json).to.have.property('name', 'uvm');
-                expect(json).to.have.property('description', 'Universal Virtual Machine for Node and Browser');
-                expect(json).to.have.property('author', 'Postman Labs <help@getpostman.com> (=)');
-                expect(json).to.have.property('license', 'Apache-2.0');
+            it('should have valid name, description, author and license', function () {
+                expect(json).to.include.keys({
+                    name: 'uvm',
+                    description: 'Universal Virtual Machine for Node and Browser',
+                    author: 'Postman Labs <help@getpostman.com> (=)',
+                    license: 'Apache-2.0'
+                });
             });
 
             it('should have a valid version string in form of <major>.<minor>.<revision>', function () {
@@ -46,7 +47,7 @@ describe('project repository', function () {
 
                 expect(json.scripts).to.be.ok;
                 json.scripts && Object.keys(json.scripts).forEach(function (scriptName) {
-                    expect(scriptRegex.test(json.scripts[scriptName])).to.be.ok;
+                    expect(json.scripts[scriptName]).to.match(scriptRegex);
                     expect(fs.statSync('npm/' + scriptName + '.js')).to.be.ok;
                 });
             });
@@ -54,7 +55,7 @@ describe('project repository', function () {
             it('should have the hashbang defined', function () {
                 json.scripts && Object.keys(json.scripts).forEach(function (scriptName) {
                     var fileContent = fs.readFileSync('npm/' + scriptName + '.js').toString();
-                    expect(/^#!\/(bin\/bash|usr\/bin\/env\snode)[\r\n][\W\w]*$/g.test(fileContent)).to.be.ok;
+                    expect(fileContent).to.match(/^#!\/(bin\/bash|usr\/bin\/env\snode)[\r\n][\W\w]*$/g);
                 });
             });
         });
