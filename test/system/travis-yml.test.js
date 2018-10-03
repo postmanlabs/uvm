@@ -1,6 +1,3 @@
-/* global describe, it */
-var expect = require('expect.js');
-
 describe('travis.yml', function () {
     var fs = require('fs'),
         yaml = require('js-yaml'),
@@ -19,16 +16,16 @@ describe('travis.yml', function () {
     });
 
     it('should be a valid yml', function () {
-        expect(travisYAMLError && travisYAMLError.message || travisYAMLError).to.not.be.ok();
+        expect(travisYAMLError && travisYAMLError.message || travisYAMLError).to.be.undefined;
     });
 
     describe('strucure', function () {
         it('should use the trusty Ubuntu distribution', function () {
-            expect(travisYAML.dist).to.be('trusty');
+            expect(travisYAML.dist).to.equal('trusty');
         });
 
         it('should have the language set to node', function () {
-            expect(travisYAML.language).to.be('node_js');
+            expect(travisYAML.language).to.equal('node_js');
             expect(travisYAML.node_js).to.eql(['4', '6', '8']);
         });
 
@@ -43,7 +40,8 @@ describe('travis.yml', function () {
         });
 
         it('should have a valid Slack notification token', function () {
-            expect(travisYAML.notifications.slack.secure).to.be.ok();
+            expect(travisYAML.notifications.slack.secure,
+                '"secure" not configured in incoming_webhook').to.be.ok;
         });
     });
 });

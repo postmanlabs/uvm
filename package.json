@@ -33,6 +33,7 @@
   "devDependencies": {
     "async": "2.6.1",
     "browserify": "16.2.3",
+    "chai": "4.2.0",
     "chalk": "2.4.1",
     "editorconfig": "0.15.0",
     "eslint": "4.19.1",

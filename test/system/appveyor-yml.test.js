@@ -1,6 +1,3 @@
-/* global describe, it */
-var expect = require('expect.js');
-
 describe('.appveyor.yml', function () {
     var fs = require('fs'),
         yaml = require('js-yaml'),
@@ -20,12 +17,12 @@ describe('.appveyor.yml', function () {
     });
 
     it('should be a valid yml', function () {
-        expect(appveyorYAMLError && appveyorYAMLError.message || appveyorYAMLError).to.not.be.ok();
+        expect(appveyorYAMLError && appveyorYAMLError.message || appveyorYAMLError).to.be.undefined;
     });
 
     describe('structure', function () {
         it('should have an init script', function () {
-            expect(appveyorYAML.init[0]).to.be('git config --global core.autocrlf input');
+            expect(appveyorYAML.init[0]).to.equal('git config --global core.autocrlf input');
         });
 
         it('should match the Travis environment matrix', function () {
@@ -46,20 +43,23 @@ describe('.appveyor.yml', function () {
         });
 
         it('should have correct install scripts', function () {
-            expect(appveyorYAML.install[0].ps).to.be('Install-Product node $env:nodejs_version');
-            expect(appveyorYAML.install[1]).to.be('npm cache clean --force');
-            expect(appveyorYAML.install[2]).to.be('appveyor-retry npm install');
+            expect(appveyorYAML.install[0].ps).to.equal('Install-Product node $env:nodejs_version');
+            expect(appveyorYAML.install[1]).to.equal('npm cache clean --force');
+            expect(appveyorYAML.install[2]).to.equal('appveyor-retry npm install');
         });
 
-        it('should have the MS build script and deploy must be turned off', function () {
-            expect(appveyorYAML.build).to.be('off');
-            expect(appveyorYAML.deploy).to.be('off');
+        it('should have the MS build script and deploy to be turned off', function () {
+            expect(appveyorYAML).to.include.keys({
+                build: 'off',
+                deploy: 'off'
+            });
         });
 
-        it('should have notifications must be configured correctly', function () {
-            expect(appveyorYAML.notifications).to.be.an(Array);
-            expect(appveyorYAML.notifications[0].provider).to.be('Slack');
-            expect(appveyorYAML.notifications[0].incoming_webhook.secure).to.be.ok();
+        it('should have notifications configured correctly', function () {
+            expect(appveyorYAML.notifications).to.be.an('array');
+            expect(appveyorYAML.notifications[0].provider).to.equal('Slack');
+            expect(appveyorYAML.notifications[0].incoming_webhook.secure,
+                '"secure" not configured in incoming_webhook').to.be.ok;
         });
     });
 });
