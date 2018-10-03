@@ -1,5 +1,3 @@
-/* global describe, it, expect */
-
 describe('.appveyor.yml', function () {
     var fs = require('fs'),
         yaml = require('js-yaml'),
@@ -51,8 +49,10 @@ describe('.appveyor.yml', function () {
         });
 
         it('should have the MS build script and deploy to be turned off', function () {
-            expect(appveyorYAML).to.have.property('build', 'off');
-            expect(appveyorYAML).to.have.property('deploy', 'off');
+            expect(appveyorYAML).to.include.keys({
+                build: 'off',
+                deploy: 'off'
+            });
         });
 
         it('should have notifications configured correctly', function () {
