@@ -8,6 +8,7 @@ require('shelljs/global');
 
 // set directories and files for test and coverage report
 var path = require('path'),
+    expect = require('chai').expect,
 
     NYC = require('nyc'),
     chalk = require('chalk'),
@@ -41,7 +42,13 @@ module.exports = function (exit) {
             return (file.substr(-8) === '.test.js');
         }).forEach(mocha.addFile.bind(mocha));
 
+        // start the mocha run
+        global.expect = expect; // for easy reference
+
         mocha.run(function (runError) {
+            // clear references and overrides
+            delete global.expect;
+
             runError && console.error(runError.stack || runError);
 
             nyc.reset();
@@ -49,6 +56,8 @@ module.exports = function (exit) {
             nyc.report();
             exit(runError ? 1 : 0);
         });
+        // cleanup
+        mocha = null;
     });
 };
 
