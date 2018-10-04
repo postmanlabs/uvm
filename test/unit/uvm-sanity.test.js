@@ -51,8 +51,7 @@ describe('uvm', function () {
                     throw new Error('error in bootCode');
                 `
             }, function (err) {
-                expect(err).to.be.an('error');
-                expect(err).to.have.property('message', 'error in bootCode');
+                expect(err).to.be.an('error').that.has.property('message', 'error in bootCode');
                 done();
             });
         });
@@ -122,8 +121,8 @@ describe('uvm', function () {
                 expect(err).to.not.be.an('object');
 
                 context.on('error', function (err) {
-                    expect(err).to.be.ok;
-                    expect(err).to.have.property('message', 'uvm: unable to dispatch "loopback" post disconnection.');
+                    expect(err).to.be.an('error').that.has.property('message',
+                        'uvm: unable to dispatch "loopback" post disconnection.');
                     done();
                 });
 
