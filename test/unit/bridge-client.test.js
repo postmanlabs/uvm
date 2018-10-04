@@ -41,8 +41,7 @@ describe('bridge-client', function () {
             var context = vm.createContext({
                 __uvm_emit: function (message) {
                     expect(arguments, 'Should have 1 argument').to.have.lengthOf(1);
-                    expect(message).to.be.a('string');
-                    expect(message).to.eql(JSON.stringify(['event-name', 'event-arg']));
+                    expect(message).to.be.a('string').that.eql(JSON.stringify(['event-name', 'event-arg']));
                     done();
                 }
             });
@@ -57,8 +56,7 @@ describe('bridge-client', function () {
             var context = vm.createContext({
                 __uvm_emit: function (message) {
                     expect(arguments, 'Should have 1 argument').to.have.lengthOf(1);
-                    expect(message).to.be.a('string');
-                    expect(message).to.eql(JSON.stringify(['loopback-return', 'event-arg']));
+                    expect(message).to.be.a('string').that.eql(JSON.stringify(['loopback-return', 'event-arg']));
                     done();
                 }
             });
@@ -71,7 +69,9 @@ describe('bridge-client', function () {
             `, context);
 
             expect(context.__uvm_dispatch).to.be.a('function');
-            context.__uvm_dispatch(JSON.stringify(['loopback', 'event-arg']));
+            expect(function () {
+                context.__uvm_dispatch(JSON.stringify(['loopback', 'event-arg']));
+            }).to.not.throw();
         });
 
         it('should register event listeners', function () {
@@ -98,7 +98,7 @@ describe('bridge-client', function () {
                     throw new Error('Nothing should be emitted');
                 },
                 done: function () {
-                    expect(arguments, 'Should have 0 argument').to.have.lengthOf(0);
+                    expect(arguments, 'Should have 0 arguments').to.have.lengthOf(0);
                     done();
                 }
             });
@@ -117,7 +117,7 @@ describe('bridge-client', function () {
                     throw new Error('Nothing should be emitted');
                 },
                 done: function () {
-                    expect(arguments, 'Should have 0 argument').to.have.lengthOf(0);
+                    expect(arguments, 'Should have 0 arguments').to.have.lengthOf(0);
                     done();
                 }
             });
@@ -158,7 +158,7 @@ describe('bridge-client', function () {
                     throw new Error('Nothing should be emitted');
                 },
                 done: function () {
-                    expect(arguments, 'Should have 0 argument').to.have.lengthOf(0);
+                    expect(arguments, 'Should have 0 arguments').to.have.lengthOf(0);
                     done();
                 }
             });
@@ -297,9 +297,9 @@ describe('bridge-client', function () {
 
             // check they are deleted
             vm.runInContext(`
-                expect(typeof __uvm_dispatch).to.not.be.undefined;
+                expect(typeof __uvm_dispatch).to.be.a('string');
                 expect(__uvm_dispatch).to.be.null;
-                expect(typeof __uvm_emit).to.not.be.undefined;
+                expect(typeof __uvm_emit).to.be.a('string');
                 expect(__uvm_emit).to.be.null;
             `, context);
 
