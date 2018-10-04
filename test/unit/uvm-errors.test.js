@@ -30,9 +30,7 @@ describe('uvm errors', function () {
 
         context.on('error', done);
         context.on('transfer', function (data) {
-            expect(data).to.be.an('object').that.has.property('child');
-            expect(data.child).to.have.property('parent');
-            expect(data.child.parent).to.eql(data);
+            expect(data).to.be.an('object').that.has.property('child').that.has.property('parent', data);
             done();
         });
 
@@ -58,9 +56,10 @@ describe('uvm errors', function () {
             if (err) { return done(err); }
             context.on('error', done);
             context.on('result', function (test) {
-                expect(test).to.be.an('object');
-                expect(test).to.not.have.property('typeofEmitter', 'function');
-                expect(test).to.not.have.property('typeofDispatcher', 'function');
+                expect(test).to.be.an('object').that.not.include({
+                    typeofEmitter: 'function',
+                    typeofDispatcher: 'function'
+                });
                 done();
             });
             context.dispatch('probe');
