@@ -36,8 +36,7 @@
         describe('setTimeout', function () {
             it('should be defined', function () {
                 vm.runInContext(`
-                    expect(setTimeout).to.be.a('function');
-                    expect(setTimeout).to.not.equal(timers.setTimeout);
+                    expect(setTimeout).to.be.a('function').that.not.equal(timers.setTimeout);
                 `, context);
             });
 
@@ -57,8 +56,7 @@
         describe('clearTimeout', function () {
             it('should be defined', function () {
                 vm.runInContext(`
-                    expect(clearTimeout).to.be.a('function');
-                    expect(clearTimeout).to.not.equal(timers.clearTimeout);
+                    expect(clearTimeout).to.be.a('function').that.not.equal(timers.clearTimeout);
                 `, context);
             });
 
@@ -82,15 +80,13 @@
         describe('setInterval and clear interval', function () {
             it('should define setter', function () {
                 vm.runInContext(`
-                    expect(setInterval).to.be.a('function');
-                    expect(setInterval).to.not.equal(timers.setInterval);
+                    expect(setInterval).to.be.a('function').that.not.equal(timers.setInterval);
                 `, context);
             });
 
             it('should define cleaner', function () {
                 vm.runInContext(`
-                    expect(clearInterval).to.be.a('function');
-                    expect(clearInterval).to.not.equal(timers.clearInterval);
+                    expect(clearInterval).to.be.a('function').that.not.equal(timers.clearInterval);
                 `, context);
             });
 
@@ -121,8 +117,7 @@
         describe('setImmediate', function () {
             it('should be defined', function () {
                 vm.runInContext(`
-                    expect(setImmediate).to.be.a('function');
-                    expect(setImmediate).to.not.equal(timers.setImmediate);
+                    expect(setImmediate).to.be.a('function').that.not.equal(timers.setImmediate);
                 `, context);
             });
 
@@ -137,8 +132,7 @@
         describe('clearImmediate', function () {
             it('should be defined', function () {
                 vm.runInContext(`
-                    expect(clearImmediate).to.be.a('function');
-                    expect(clearImmediate).to.not.equal(timers.clearImmediate);
+                    expect(clearImmediate).to.be.a('function').that.not.equal(timers.clearImmediate);
                 `, context);
             });
 
