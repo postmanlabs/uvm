@@ -1,7 +1,7 @@
 # Postman UVM Changelog
 
-#### v1.7.5 (October 5, 2018)
-* Updated to chai assertion library and removed Expect.js 
+#### Unreleased
+- Migrated tests to chai expect assertions 
 
 #### v1.7.4 (September 21, 2018)
 - Updated circular-json and other dependencies
