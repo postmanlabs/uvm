@@ -1,5 +1,8 @@
 # Postman UVM Changelog
 
+#### Unreleased
+- Migrated tests to chai expect assertions 
+
 #### v1.7.4 (September 21, 2018)
 - Updated circular-json and other dependencies
 - Housekeeping to remove nsp
