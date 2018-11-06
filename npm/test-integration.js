@@ -18,7 +18,7 @@ var path = require('path'),
 
 module.exports = function (exit) {
     // banner line
-    console.log(chalk.yellow.bold('Running unit tests using mocha on node...'));
+    console.log(chalk.yellow.bold('Running integration tests using mocha on node...'));
 
     sh.test('-d', COV_REPORT_PATH) && sh.rm('-rf', COV_REPORT_PATH);
     sh.mkdir('-p', COV_REPORT_PATH);
