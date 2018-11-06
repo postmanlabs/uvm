@@ -4,14 +4,13 @@
 // ---------------------------------------------------------------------------------------------------------------------
 /* eslint-env node, es6 */
 
-require('shelljs/global');
-
 // set directories and files for test and coverage report
 var path = require('path'),
-    expect = require('chai').expect,
 
     NYC = require('nyc'),
+    sh = require('shelljs'),
     chalk = require('chalk'),
+    expect = require('chai').expect,
     recursive = require('recursive-readdir'),
 
     COV_REPORT_PATH = '.coverage',
@@ -21,12 +20,13 @@ module.exports = function (exit) {
     // banner line
     console.log(chalk.yellow.bold('Running unit tests using mocha on node...'));
 
-    test('-d', COV_REPORT_PATH) && rm('-rf', COV_REPORT_PATH);
-    mkdir('-p', COV_REPORT_PATH);
+    sh.test('-d', COV_REPORT_PATH) && sh.rm('-rf', COV_REPORT_PATH);
+    sh.mkdir('-p', COV_REPORT_PATH);
 
     var Mocha = require('mocha'),
         nyc = new NYC({
-            reporter: ['text', 'lcov'],
+            hookRequire: true,
+            reporter: ['text', 'lcov', 'text-summary'],
             reportDir: COV_REPORT_PATH,
             tempDirectory: COV_REPORT_PATH
         });
@@ -37,6 +37,9 @@ module.exports = function (exit) {
         if (err) { console.error(err); return exit(1); }
 
         var mocha = new Mocha({ timeout: 1000 * 60 });
+
+        // specially load bootstrap file
+        mocha.addFile(path.join(SPEC_SOURCE_DIR, '_bootstrap.js'));
 
         files.filter(function (file) { // extract all test files
             return (file.substr(-8) === '.test.js');
@@ -62,4 +65,4 @@ module.exports = function (exit) {
 };
 
 // ensure we run this script exports if this is a direct stdin.tty run
-!module.parent && module.exports(exit);
+!module.parent && module.exports(process.exit);
