@@ -18,6 +18,7 @@ describe('uvm errors', function () {
 
     it('should dispatch cyclic object', function (done) {
         var context = uvm.spawn({
+                debug: true,
                 bootCode: `
                     bridge.on('transfer', function (data) {
                         bridge.dispatch('transfer', data);
