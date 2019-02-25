@@ -1,4 +1,5 @@
-var vm = require('vm');
+var vm = require('vm'),
+    Flatted = require('flatted');
 
 describe('bridge-client', function () {
     var bridgeClient = require('../../lib/uvm/bridge-client');
@@ -41,7 +42,7 @@ describe('bridge-client', function () {
             var context = vm.createContext({
                 __uvm_emit: function (message) {
                     expect(arguments, 'Should have 1 argument').to.have.lengthOf(1);
-                    expect(message).to.be.a('string').that.eql(JSON.stringify(['event-name', 'event-arg']));
+                    expect(message).to.be.a('string').that.eql(Flatted.stringify(['event-name', 'event-arg']));
                     done();
                 }
             });
@@ -56,7 +57,7 @@ describe('bridge-client', function () {
             var context = vm.createContext({
                 __uvm_emit: function (message) {
                     expect(arguments, 'Should have 1 argument').to.have.lengthOf(1);
-                    expect(message).to.be.a('string').that.eql(JSON.stringify(['loopback-return', 'event-arg']));
+                    expect(message).to.be.a('string').that.eql(Flatted.stringify(['loopback-return', 'event-arg']));
                     done();
                 }
             });
@@ -70,7 +71,7 @@ describe('bridge-client', function () {
 
             expect(context.__uvm_dispatch).to.be.a('function');
             expect(function () {
-                context.__uvm_dispatch(JSON.stringify(['loopback', 'event-arg']));
+                context.__uvm_dispatch(Flatted.stringify(['loopback', 'event-arg']));
             }).to.not.throw();
         });
 
@@ -273,7 +274,7 @@ describe('bridge-client', function () {
             var context = vm.createContext({
                 expect: expect,
                 __uvm_emit: function (args) {
-                    expect(args).to.equal('["test","context closures are working"]');
+                    expect(args).to.equal(Flatted.stringify(['test', 'context closures are working']));
                     done();
                 }
             });

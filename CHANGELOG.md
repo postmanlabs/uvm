@@ -1,7 +1,8 @@
 # Postman UVM Changelog
 
 #### Unreleased
-- Migrated tests to chai expect assertions 
+- Migrated tests to chai expect assertions
+- (chore) Replaced deprecated Circular-JSON using new module Flatted (and added benchmarks)
 
 #### v1.7.4 (September 21, 2018)
 - Updated circular-json and other dependencies
