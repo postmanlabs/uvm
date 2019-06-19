@@ -26,7 +26,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "flatted": "2.0.0",
-    "inherits": "2.0.3",
+    "inherits": "2.0.4",
     "lodash": "4.17.11",
     "uuid": "3.3.2"
   },
