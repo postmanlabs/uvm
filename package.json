@@ -27,7 +27,7 @@
   "dependencies": {
     "flatted": "2.0.0",
     "inherits": "2.0.4",
-    "lodash": "4.17.11",
+    "lodash": "4.17.12",
     "uuid": "3.3.2"
   },
   "devDependencies": {
