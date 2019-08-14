@@ -1,3 +1,7 @@
+master:
+  fixed bugs:
+    - Fixed a bug where execution context was polluted with the global prototype
+
 1.7.6:
   date: 2019-08-01
   chores:
