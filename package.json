@@ -54,7 +54,7 @@
     "nyc": "14.1.1",
     "packity": "0.3.2",
     "parse-gitignore": "1.0.1",
-    "puppeteer": "1.19.0",
+    "puppeteer": "1.20.0",
     "recursive-readdir": "2.2.2",
     "shelljs": "0.8.3",
     "watchify": "3.11.1",
