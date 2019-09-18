@@ -1,4 +1,5 @@
-master:
+1.7.8:
+  date: 2019-09-18
   fixed bugs:
     - >-
       Fixed a bug where `setImmediate` and `clearImmediate` functions were
