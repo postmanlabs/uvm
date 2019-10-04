@@ -15,7 +15,9 @@
     "test-system": "node npm/test-system.js",
     "test-lint": "node npm/test-lint.js",
     "test-unit": "node npm/test-unit.js",
-    "test": "node npm/test.js"
+    "test": "node npm/test.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "keywords": [
     "eval",
@@ -28,7 +30,8 @@
     "flatted": "2.0.1",
     "inherits": "2.0.4",
     "lodash": "4.17.15",
-    "uuid": "3.3.2"
+    "uuid": "3.3.2",
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "async": "2.6.1",
@@ -72,5 +75,6 @@
     "ignore": [
       "eslint-plugin-jsdoc"
     ]
-  }
+  },
+  "snyk": true
 }
