@@ -8,6 +8,7 @@ node_js:
 - '8'
 - '10'
 after_script:
+  - rm -rf .coverage/
   - npm run test-unit
   - nyc merge .coverage coverage.json
   - bash <(curl -s https://codecov.io/bash) -f coverage.json -c -F unitTest
