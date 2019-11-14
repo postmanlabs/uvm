@@ -26,7 +26,7 @@ module.exports = function (exit) {
     var Mocha = require('mocha'),
         nyc = new NYC({
             hookRequire: true,
-            reporter: ['text', 'lcov', 'text-summary'],
+            reporter: ['text', 'lcov', 'text-summary', 'json'],
             reportDir: COV_REPORT_PATH,
             tempDirectory: COV_REPORT_PATH
         });
@@ -57,7 +57,14 @@ module.exports = function (exit) {
             nyc.reset();
             nyc.writeCoverageFile();
             nyc.report();
-            exit(runError ? 1 : 0);
+            nyc.checkCoverage({
+                statements: 75,
+                branches: 50,
+                functions: 60,
+                lines: 80
+            });
+
+            exit(process.exitCode || runError ? 1 : 0);
         });
         // cleanup
         mocha = null;
