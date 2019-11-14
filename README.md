@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/coditva/uvm.svg?branch=develop)](https://travis-ci.com/coditva/uvm)
 [![codecov](https://codecov.io/gh/coditva/uvm/branch/develop/graph/badge.svg)](https://codecov.io/gh/coditva/uvm)
 
 # uvm
