@@ -13,5 +13,4 @@ flags:
   projectB:
     paths:
       - lib/
-comment:
-  behavior: spammy
+comment: false
