@@ -4,6 +4,8 @@
     - >-
       Fixed a bug where `setImmediate` and `clearImmediate` functions were
       getting normalized incorrectly
+  chores:
+    - Added `codecov` for code coverage checks
 
 1.7.7:
   date: 2019-08-14
