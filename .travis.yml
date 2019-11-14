@@ -2,11 +2,11 @@ dist: trusty
 language: node_js
 os:
 - linux
-- windows
-node_js:
-- '6'
-- '8'
-- '10'
+# - windows
+# node_js:
+# - '6'
+# - '8'
+# - '10'
 jobs:
   include:
     - name: 'Coverage'
