@@ -1,0 +1,8 @@
+parsers:
+  javascript:
+    enable_partials: yes
+coverage:
+  status:
+    project:
+      default:
+        target: auto
