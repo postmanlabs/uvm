@@ -1,3 +1,7 @@
+master:
+  chores:
+    - Added `codecov` for code coverage checks
+
 1.7.8:
   date: 2019-09-18
   fixed bugs:

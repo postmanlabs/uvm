@@ -8,7 +8,13 @@
             bootTimeout: 100,
             bootCode: 'while(1) {}'
         }, function (err, context) {
-            expect(err).to.be.an('error').that.has.property('message', 'Script execution timed out.');
+            expect(err).to.be.an('error').that.has.property('message');
+
+            // @note nodeVersionDiscrepancy: node version 12 onwards sends a different message
+            expect(err.message).to.be.oneOf([
+                'Script execution timed out.',
+                'Script execution timed out after 100ms'
+            ]);
             context && context.on('error', done);
             done();
         });
@@ -29,7 +35,13 @@
             expect(err).to.be.null;
 
             context.on('error', function (err) {
-                expect(err).to.be.an('error').that.has.property('message', 'Script execution timed out.');
+                expect(err).to.be.an('error').that.has.property('message');
+
+                // @note nodeVersionDiscrepancy: node version 12 onwards sends a different message
+                expect(err.message).to.be.oneOf([
+                    'Script execution timed out.',
+                    'Script execution timed out after 100ms'
+                ]);
                 done();
             });
 
