@@ -28,7 +28,7 @@
     "flatted": "2.0.1",
     "inherits": "2.0.4",
     "lodash": "4.17.15",
-    "uuid": "3.3.2"
+    "uuid": "8.1.0"
   },
   "devDependencies": {
     "async": "2.6.1",
