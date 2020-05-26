@@ -25,7 +25,7 @@
   "author": "Postman Labs <help@getpostman.com> (=)",
   "license": "Apache-2.0",
   "dependencies": {
-    "flatted": "2.0.1",
+    "flatted": "3.0.2",
     "inherits": "2.0.4",
     "lodash": "4.17.15",
     "uuid": "3.3.2"
