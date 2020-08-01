@@ -87,4 +87,29 @@ describe('uvm errors', function () {
             context.dispatch('loopback', 'this has \n "escape" \'characters\"');
         });
     });
+
+    it('should bubble up error location', function (done) {
+        uvm.spawn({
+            bootCode: `
+                bridge.on('loopback', function (data) {
+                    throw new Error("test error");
+                    bridge.dispatch('loopback', data);
+                });
+            `
+        }, function (err, context) {
+            expect(err).to.not.be.an('object');
+
+            context.on('error', function (err, line) {
+                expect(err).to.have.property('message', 'test error');
+                expect(line).to.equal(61);
+                done();
+            });
+
+            context.on('loopback', function () {
+                expect.fail('the loopback execution should fail. error not trigerred');
+                done();
+            });
+            context.dispatch('loopback', 'dummy-data');
+        });
+    });
 });
