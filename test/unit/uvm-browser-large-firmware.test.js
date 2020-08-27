@@ -1,4 +1,4 @@
-(typeof window !== 'undefined' ? describe : describe.skip)('custom iframe in browser', function () {
+(typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
     var _ = require('lodash'),
         uvm = require('../../lib'),
 
@@ -14,42 +14,40 @@
         },
         getFirmware = function (code) {
             return `
-            <!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-            <meta charset="UTF-8">
-            <script type="text/javascript">
-            ${code}
-            </script>
-            <script type="text/javascript">
-            (function (win) {
-                var init = function (e) {
-                    win.removeEventListener('message', init);
-                    // eslint-disable-next-line no-eval
-                    (e && e.data && (typeof e.data.__init_uvm === 'string')) && eval(e.data.__init_uvm);
-                };
-                win.addEventListener('message', init);
-            }(window));
-            </script>
-            </head></html>`;
+                ${code}
+                (function (self) {
+                    var init = function (e) {
+                        self.removeEventListener('message', init);
+                        // eslint-disable-next-line no-eval
+                        (e && e.data && (typeof e.data.__init_uvm === 'string')) && eval(e.data.__init_uvm);
+                    };
+                    self.addEventListener('message', init);
+                }(self));
+            `;
         },
-        iframe;
+        firmwareUrl,
+        worker;
 
-    beforeEach(function (done) {
-        var fakeBundleSize = 5 * 1024 * 1024, // 10mb (5 million characters with 2 bytes each)
+    beforeEach(function () {
+        var fakeBundleSize = 5 * 1024 * 1024, // 10MB (5 million characters with 2 bytes each)
             largeJSStatement = `var x = '${getLargeString(fakeBundleSize)}';`;
 
-        iframe = document.createElement('iframe');
-        iframe.setAttribute('src', 'data:text/html;base64, ' +
-            btoa(unescape(encodeURIComponent(getFirmware(largeJSStatement)))));
-        iframe.setAttribute('srcdoc', unescape(encodeURIComponent(getFirmware(largeJSStatement))));
-        iframe.addEventListener('load', function () {
-            done();
-        });
-        document.body.appendChild(iframe);
+        firmwareUrl = window.URL.createObjectURL(
+            new Blob([getFirmware(largeJSStatement)], { type: 'text/javascript' })
+        );
+
+        worker = new Worker(firmwareUrl);
+    });
+
+    afterEach(function () {
+        worker.terminate();
+        window.URL.revokeObjectURL(firmwareUrl);
+        worker = firmwareUrl = null;
     });
 
     it('should load and dispatch messages', function (done) {
         uvm.spawn({
-            _sandbox: iframe,
+            _sandbox: worker,
             bootCode: `
                 bridge.on('loopback', function (data) {
                     bridge.dispatch('loopback', data);
@@ -65,10 +63,5 @@
             context.dispatch('loopback', 'this should return');
         });
 
-    });
-
-    afterEach(function () {
-        iframe.parentNode.removeChild(iframe);
-        iframe = null;
     });
 });
