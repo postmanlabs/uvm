@@ -1,21 +1,25 @@
-(typeof window !== 'undefined' ? describe : describe.skip)('custom iframe in browser', function () {
+(typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
     var uvm = require('../../lib'),
         firmware = require('../../firmware/sandbox-base'),
-        iframe;
+        firmwareUrl,
+        worker;
 
-    beforeEach(function (done) {
-        iframe = document.createElement('iframe');
-        iframe.setAttribute('src', 'data:text/html;base64, ' +
-            btoa(unescape(encodeURIComponent(firmware))));
-        iframe.addEventListener('load', function () {
-            done();
-        });
-        document.body.appendChild(iframe);
+    beforeEach(function () {
+        firmwareUrl = window.URL.createObjectURL(
+            new Blob([firmware], { type: 'text/javascript' })
+        );
+        worker = new Worker(firmwareUrl);
+    });
+
+    afterEach(function () {
+        worker.terminate();
+        window.URL.revokeObjectURL(firmwareUrl);
+        worker = firmwareUrl = null;
     });
 
     it('should load and dispatch messages', function (done) {
         uvm.spawn({
-            _sandbox: iframe,
+            _sandbox: worker,
             bootCode: `
                 bridge.on('loopback', function (data) {
                     bridge.dispatch('loopback', data);
@@ -31,10 +35,5 @@
             context.dispatch('loopback', 'this should return');
         });
 
-    });
-
-    afterEach(function () {
-        iframe.parentNode.removeChild(iframe);
-        iframe = null;
     });
 });

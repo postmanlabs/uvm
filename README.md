@@ -1,6 +1,6 @@
 # uvm [![Build Status](https://travis-ci.org/postmanlabs/uvm.svg?branch=develop)](https://travis-ci.org/postmanlabs/uvm) [![codecov](https://codecov.io/gh/postmanlabs/uvm/branch/develop/graph/badge.svg)](https://codecov.io/gh/postmanlabs/uvm)
 
-Module that exposes an event emitter to send data across contexts (vm in node and iframe in browser)
+Module that exposes an event emitter to send data across contexts ([VM](https://nodejs.org/api/vm.html) in Node.js and [Web Workers](https://www.w3.org/TR/workers/) in browser)
 
 ## Usage
 
