@@ -81,5 +81,11 @@ module.exports = function (config) {
         configuration.browsers = ['chromeTravis'];
     }
 
+    // Use `npm run test-browser -- --debug` to debug tests in Chrome console
+    if (process.argv[2] === '--debug') {
+        configuration.browsers = ['Chrome'];
+        configuration.singleRun = false;
+    }
+
     config.set(configuration);
 };
