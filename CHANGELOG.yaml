@@ -1,6 +1,7 @@
 master:
   new features:
     - GH-407 Using Web Workers for browser sandbox
+    - GH-410 Deleted __uvm_* private variables from the global scope
 
 1.7.9:
   date: 2020-07-13
