@@ -85,6 +85,30 @@ describe('uvm', function () {
             });
         });
 
+        it('should not leak __uvm_* private variables in global scope', function (done) {
+            uvm.spawn({
+                bootCode: `
+                    bridge.on('getProps', function () {
+                        bridge.dispatch('getProps', Object.getOwnPropertyNames(Function('return this')()));
+                    });
+                `
+            }, function (err, context) {
+                expect(err).to.be.null;
+
+                context.on('error', done);
+                context.on('getProps', function (data) {
+                    expect(data).to.be.an('array').that.is.not.empty;
+
+                    for (var key of data) {
+                        expect(key).to.not.have.string('__uvm');
+                    }
+                    done();
+                });
+
+                context.dispatch('getProps');
+            });
+        });
+
         it('should restore dispatcher if it is deleted', function (done) {
             uvm.spawn({
                 bootCode: `
