@@ -114,10 +114,10 @@ describe('uvm', function () {
                     expect(data).to.be.an('object');
 
                     // In Node.js v6 VM, `delete global` doesn't work so we make
-                    // sure it's set to undefined.
+                    // sure it's set to null.
                     if (nodeVersion === 6) {
                         for (var prop in data) { // eslint-disable-line guard-for-in
-                            expect(data[prop]).to.equal('undefined');
+                            expect(data[prop]).to.equal('null');
                         }
                         return done();
                     }
