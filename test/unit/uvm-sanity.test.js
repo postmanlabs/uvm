@@ -85,6 +85,58 @@ describe('uvm', function () {
             });
         });
 
+        it('should not leak __uvm_* private variables in global scope', function (done) {
+            uvm.spawn({
+                bootCode: `
+                    bridge.on('getProps', function () {
+                        var globalContext = Function('return this')(),
+                            data = {};
+
+                        Object.getOwnPropertyNames(globalContext).forEach(function (prop) {
+                            if (prop.indexOf('__uvm') !== -1) {
+                                data[prop] = String(globalContext[prop]);
+                            }
+                        });
+
+                        bridge.dispatch('getProps', data);
+
+                        // Use this when we drop support for Node v6
+                        // bridge.dispatch('getProps', Object.getOwnPropertyNames(Function('return this')()));
+                    });
+                `
+            }, function (err, context) {
+                expect(err).to.be.null;
+
+                var nodeVersion = process && process.versions && parseInt(process.versions.node);
+
+                context.on('error', done);
+                context.on('getProps', function (data) {
+                    expect(data).to.be.an('object');
+
+                    // In Node.js v6 VM, `delete global` doesn't work so we make
+                    // sure it's set to null.
+                    if (nodeVersion === 6) {
+                        for (var prop in data) { // eslint-disable-line guard-for-in
+                            expect(data[prop]).to.equal('null');
+                        }
+                        return done();
+                    }
+
+                    expect(data).to.be.empty;
+                    done();
+
+                    // Use this when we drop support for Node v6
+                    // expect(data).to.be.an('array').that.is.not.empty;
+
+                    // for (var key of data) {
+                    //     expect(key).to.not.have.string('__uvm');
+                    // }
+                });
+
+                context.dispatch('getProps');
+            });
+        });
+
         it('should restore dispatcher if it is deleted', function (done) {
             uvm.spawn({
                 bootCode: `
