@@ -17,18 +17,17 @@ Thumbs.db
 .idea
 .vscode
 
-
 # PROJECT
 # =======
 # Configuration pertaining to project specific repository structure.
 
-# - Prevent Sublime text IDE files from being commited to repository
+# - Prevent Sublime text IDE files from being committed to repository
 *.sublime-*
 
-# - Allow sublime text project file to be commited in the development directory.
+# - Allow sublime text project file to be committed in the development directory.
 !/develop/*.sublime-project
 
-# - Prevent CI output files from being Added
+# - Prevent CI output files from being added
 /out/
 
 # - Prevent diff backups from SourceTree from showing as commit.
@@ -38,5 +37,17 @@ Thumbs.db
 *.REMOTE.*
 *.orig
 
-# Prevent code coverage from being published to npm
+# - Prevent code coverage reports from being added
 .coverage
+.nyc_output
+
+# - Prevent config and test files from being added
+.git*
+npm/
+test/
+.eslintrc
+.nycrc.js
+codecov.yml
+.travis.yml
+.editorconfig
+.jsdoc-config.json
