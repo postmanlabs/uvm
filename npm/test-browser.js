@@ -4,8 +4,9 @@
 // This script is intended to execute all unit tests in the Chrome Browser.
 // ---------------------------------------------------------------------------------------------------------------------
 
-var chalk = require('chalk'),
+const chalk = require('chalk'),
     path = require('path'),
+    KarmaServer = require('karma').Server,
 
     KARMA_CONFIG_PATH = path.join(__dirname, '..', 'test', 'karma.conf');
 
@@ -15,8 +16,6 @@ module.exports = function (exit) {
     }
 
     console.info(chalk.yellow.bold('Running unit tests within browser...'));
-
-    var KarmaServer = require('karma').Server;
 
     (new KarmaServer({ // eslint-disable no-new
         cmd: 'start',

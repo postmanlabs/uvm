@@ -81,7 +81,6 @@ describe('uvm', function () {
                 });
 
                 contexts[0].dispatch('loopback', 'zero');
-
             });
         });
 

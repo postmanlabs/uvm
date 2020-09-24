@@ -1,3 +1,4 @@
+/* eslint-disable mocha/no-top-level-hooks */
 (typeof window !== 'undefined' ? describe : describe.skip)('missing API in browser', function () {
     const uvm = require('../../lib'),
         expect = require('chai').expect;

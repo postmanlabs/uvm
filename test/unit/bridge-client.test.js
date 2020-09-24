@@ -14,6 +14,7 @@ describe('bridge-client', function () {
 
     it('should return a client with bootstrap in it', function () {
         var bootCode = 'console.log("hi mocha");';
+
         expect(bridgeClient(bootCode)).to.be.a('string').and.contain(bootCode);
     });
 
@@ -26,11 +27,12 @@ describe('bridge-client', function () {
     describe('emitter', function () {
         it('should expose global', function () {
             var context = vm.createContext({
-                expect: expect,
-                __uvm_emit: function () {
+                expect,
+                __uvm_emit () {
                     throw new Error('Nothing should be emitted');
                 }
             });
+
             vm.runInContext(bridgeClient(), context);
 
             vm.runInContext(`
@@ -40,12 +42,13 @@ describe('bridge-client', function () {
 
         it('should forward emits to __uvm_emit function', function (done) {
             var context = vm.createContext({
-                __uvm_emit: function (message) {
+                __uvm_emit (message) {
                     expect(arguments, 'Should have 1 argument').to.have.lengthOf(1);
                     expect(message).to.be.a('string').that.eql(Flatted.stringify(['event-name', 'event-arg']));
                     done();
                 }
             });
+
             vm.runInContext(bridgeClient(), context);
 
             vm.runInContext(`
@@ -55,7 +58,7 @@ describe('bridge-client', function () {
 
         it('should forward dispatch to __uvm_dispatch function', function (done) {
             var context = vm.createContext({
-                __uvm_emit: function (message) {
+                __uvm_emit (message) {
                     expect(arguments, 'Should have 1 argument').to.have.lengthOf(1);
                     expect(message).to.be.a('string').that.eql(Flatted.stringify(['loopback-return', 'event-arg']));
                     done();
@@ -77,11 +80,12 @@ describe('bridge-client', function () {
 
         it('should register event listeners', function () {
             var context = vm.createContext({
-                __uvm_emit: function () {
+                __uvm_emit () {
                     throw new Error('Nothing should be emitted');
                 },
-                expect: expect
+                expect
             });
+
             vm.runInContext(bridgeClient(), context);
 
             vm.runInContext(`
@@ -94,15 +98,16 @@ describe('bridge-client', function () {
 
         it('should trigger registered event listeners', function (done) {
             var context = vm.createContext({
-                expect: expect,
-                __uvm_emit: function () {
+                expect,
+                __uvm_emit () {
                     throw new Error('Nothing should be emitted');
                 },
-                done: function () {
+                done () {
                     expect(arguments, 'Should have 0 arguments').to.have.lengthOf(0);
                     done();
                 }
             });
+
             vm.runInContext(bridgeClient(), context);
 
             vm.runInContext(`
@@ -113,15 +118,16 @@ describe('bridge-client', function () {
 
         it('should trigger multiple registered event listeners in order', function (done) {
             var context = vm.createContext({
-                expect: expect,
-                __uvm_emit: function () {
+                expect,
+                __uvm_emit () {
                     throw new Error('Nothing should be emitted');
                 },
-                done: function () {
+                done () {
                     expect(arguments, 'Should have 0 arguments').to.have.lengthOf(0);
                     done();
                 }
             });
+
             vm.runInContext(bridgeClient(), context);
 
             vm.runInContext(`
@@ -154,11 +160,11 @@ describe('bridge-client', function () {
 
         it('should be able to remove a particular registered event', function (done) {
             var context = vm.createContext({
-                expect: expect,
-                __uvm_emit: function () {
+                expect,
+                __uvm_emit () {
                     throw new Error('Nothing should be emitted');
                 },
-                done: function () {
+                done () {
                     expect(arguments, 'Should have 0 arguments').to.have.lengthOf(0);
                     done();
                 }
@@ -257,10 +263,11 @@ describe('bridge-client', function () {
 
         it('should not leave behind any additional globals except `bridge` related', function (done) {
             var context = vm.createContext({
-                __uvm_emit: function () {
+                __uvm_emit () {
                     throw new Error('Nothing should be emitted');
                 }
             });
+
             vm.runInContext(bridgeClient(), context);
 
             expect(Object.keys(context).sort()).to.eql([
@@ -272,8 +279,8 @@ describe('bridge-client', function () {
 
         it('should work after the transport functions are removed from context externally', function (done) {
             var context = vm.createContext({
-                expect: expect,
-                __uvm_emit: function (args) {
+                expect,
+                __uvm_emit (args) {
                     expect(args).to.equal(Flatted.stringify(['test', 'context closures are working']));
                     done();
                 }
@@ -310,5 +317,4 @@ describe('bridge-client', function () {
             `, context);
         });
     });
-
 });

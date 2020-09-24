@@ -1,3 +1,4 @@
+/* eslint-disable mocha/no-top-level-hooks */
 (typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
     const _ = require('lodash'),
         uvm = require('../../lib'),
@@ -6,7 +7,7 @@
         /**
          * Creates a large string with a given character length.
          *
-         * @param {Number} size
+         * @param {Number} size -
          *
          * @returns {String}
          */
@@ -34,9 +35,9 @@
         const fakeBundleSize = 5 * 1024 * 1024, // 10MB (5 million characters with 2 bytes each)
             largeJSStatement = `var x = '${getLargeString(fakeBundleSize)}';`;
 
-        firmwareUrl = window.URL.createObjectURL(
-            new Blob([getFirmware(largeJSStatement)], { type: 'text/javascript' })
-        );
+        firmwareUrl = window.URL.createObjectURL(new Blob([
+            getFirmware(largeJSStatement)
+        ], { type: 'text/javascript' }));
 
         worker = new Worker(firmwareUrl);
     });
@@ -64,6 +65,5 @@
             });
             context.dispatch('loopback', 'this should return');
         });
-
     });
 });

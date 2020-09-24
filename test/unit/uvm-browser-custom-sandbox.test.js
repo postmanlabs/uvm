@@ -1,3 +1,4 @@
+/* eslint-disable mocha/no-top-level-hooks */
 (typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
     const uvm = require('../../lib'),
         expect = require('chai').expect,
@@ -7,9 +8,7 @@
         worker;
 
     beforeEach(function () {
-        firmwareUrl = window.URL.createObjectURL(
-            new Blob([firmware], { type: 'text/javascript' })
-        );
+        firmwareUrl = window.URL.createObjectURL(new Blob([firmware], { type: 'text/javascript' }));
         worker = new Worker(firmwareUrl);
     });
 
@@ -36,6 +35,5 @@
             });
             context.dispatch('loopback', 'this should return');
         });
-
     });
 });
