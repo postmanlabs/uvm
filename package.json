@@ -2,27 +2,33 @@
   "name": "uvm",
   "version": "1.8.0-beta.1",
   "description": "Universal Virtual Machine for Node and Browser",
+  "author": "Postman Inc.",
+  "license": "Apache-2.0",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "browser": {
     "./lib/uvm/bridge.js": "./lib/uvm/bridge.browser.js"
   },
-  "scripts": {
-    "test-browser": "node npm/test-browser.js",
-    "test-system": "node npm/test-system.js",
-    "test-lint": "node npm/test-lint.js",
-    "test-unit": "nyc --nycrc-path=.nycrc.js node npm/test-unit.js",
-    "test": "npm run test-lint && npm run test-system && npm run test-unit && npm run test-browser"
+  "homepage": "https://github.com/postmanlabs/uvm#readme",
+  "bugs": {
+    "url": "https://github.com/postmanlabs/uvm/issues",
+    "email": "help@postman.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/postmanlabs/uvm.git"
   },
   "keywords": [
-    "eval",
-    "scope",
+    "vm",
+    "contextify",
     "postman"
   ],
-  "author": "Postman Labs <help@getpostman.com> (=)",
-  "license": "Apache-2.0",
+  "scripts": {
+    "test": "npm run test-lint && npm run test-system && npm run test-unit && npm run test-browser",
+    "test-browser": "node npm/test-browser.js",
+    "test-lint": "node npm/test-lint.js",
+    "test-system": "node npm/test-system.js",
+    "test-unit": "nyc --nycrc-path=.nycrc.js node npm/test-unit.js"
+  },
   "dependencies": {
     "flatted": "2.0.1",
     "inherits": "2.0.4",
@@ -59,17 +65,7 @@
     "watchify": "^3.11.1",
     "yankee": "^1.0.8"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/postmanlabs/uvm.git"
-  },
-  "bugs": {
-    "url": "https://github.com/postmanlabs/uvm/issues"
-  },
-  "homepage": "https://github.com/postmanlabs/uvm#readme",
-  "greenkeeper": {
-    "ignore": [
-      "eslint-plugin-jsdoc"
-    ]
+  "engines": {
+    "node": ">=10"
   }
 }
