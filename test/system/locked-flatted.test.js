@@ -1,3 +1,5 @@
+const expect = require('chai').expect;
+
 // There is a string variant of the library in bridge-client.js
 describe('flatted dependency', function () {
     // To update flatted, the package needs to be updated and then post installing flatted, one needs to

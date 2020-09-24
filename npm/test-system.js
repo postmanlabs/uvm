@@ -1,64 +1,54 @@
 #!/usr/bin/env node
 /* eslint-env node, es6 */
 
-const recursive = require('recursive-readdir'),
-    path = require('path'),
+const path = require('path'),
 
-    chalk = require('chalk'),
-    async = require('async'),
-    expect = require('chai').expect,
     Mocha = require('mocha'),
+    chalk = require('chalk'),
+    packity = require('packity'),
+    recursive = require('recursive-readdir'),
 
     SPEC_SOURCE_DIR = path.join(__dirname, '..', 'test', 'system');
 
 module.exports = function (exit) {
     // banner line
-    console.info(chalk.yellow.bold('\nRunning system tests using mocha and nsp...'));
+    console.info(chalk.yellow.bold('\nRunning system tests using mocha...'));
 
-    async.series([
-        // run test specs using mocha
-        function (next) {
-            recursive(SPEC_SOURCE_DIR, function (err, files) {
-                if (err) {
-                    console.error(err.stack || err);
+    // add all spec files to mocha
+    recursive(SPEC_SOURCE_DIR, function (err, files) {
+        if (err) {
+            console.error(err);
 
-                    return next(1);
-                }
+            return exit(1);
+        }
 
-                var mocha = new Mocha();
+        const mocha = new Mocha({ timeout: 1000 * 60 });
 
-                files.filter(function (file) {
-                    return (file.substr(-8) === '.test.js');
-                }).forEach(mocha.addFile.bind(mocha));
+        files.filter(function (file) { // extract all test files
+            return (file.substr(-8) === '.test.js');
+        }).forEach(mocha.addFile.bind(mocha));
 
-                // start the mocha run
-                global.expect = expect; // for easy reference
+        // start the mocha run
+        mocha.run(function (runError) {
+            if (runError) {
+                console.error(runError.stack || runError);
 
-                mocha.run(function (err) {
-                    // clear references and overrides
-                    delete global.expect;
+                return exit(1);
+            }
 
-                    err && console.error(err.stack || err);
-                    next(err ? 1 : 0);
-                });
-                // cleanup
-                mocha = null;
-            });
-        },
-
-        // packity
-        function (next) {
-            var packity = require('packity'),
-                options = {
-                    path: './', dev: true
-                };
+            // packity
+            const options = {
+                path: './',
+                dev: true
+            };
 
             packity(options, function (err, results) {
                 packity.cliReporter(options)(err, results);
-                next(err);
+
+                exit(err ? 1 : 0);
             });
-        }
-    ], exit);
+        });
+    });
 };
 
 // ensure we run this script exports if this is a direct stdin.tty run

@@ -36,7 +36,6 @@
     "uuid": "8.3.0"
   },
   "devDependencies": {
-    "async": "^3.2.0",
     "benchmark": "^2.1.4",
     "browserify": "^16.5.2",
     "chai": "^4.2.0",
@@ -61,9 +60,7 @@
     "parse-gitignore": "^1.0.1",
     "postman-jsdoc-theme": "^0.0.3",
     "recursive-readdir": "^2.2.2",
-    "shelljs": "^0.8.4",
-    "watchify": "^3.11.1",
-    "yankee": "^1.0.8"
+    "watchify": "^3.11.1"
   },
   "engines": {
     "node": ">=10"

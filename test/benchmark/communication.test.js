@@ -1,18 +1,16 @@
-var Benchmark = require('benchmark'),
+const Benchmark = require('benchmark'),
     suite = new Benchmark.Suite(),
     uuid = require('uuid').v4,
-    uvm = require('../../lib'),
-    context,
-    defers;
+    uvm = require('../../lib');
 
-context = uvm.spawn({
-    bootCode: `
-        bridge.on('loopback', function (data) {
-            bridge.dispatch('loopback', data);
-        });
-    `
-});
-defers = {};
+let context = uvm.spawn({
+        bootCode: `
+            bridge.on('loopback', function (data) {
+                bridge.dispatch('loopback', data);
+            });
+        `
+    }),
+    defers = {};
 
 context.on('loopback', function (data) {
     defers[data.__id].resolve();
