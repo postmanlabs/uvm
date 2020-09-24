@@ -1,6 +1,6 @@
 var Benchmark = require('benchmark'),
     suite = new Benchmark.Suite(),
-    uuid = require('uuid'),
+    uuid = require('uuid').v4,
     uvm = require('../../lib'),
     context,
     defers;
