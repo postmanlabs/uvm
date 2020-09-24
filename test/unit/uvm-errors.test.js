@@ -1,8 +1,9 @@
-describe('uvm errors', function () {
-    var uvm = require('../../lib');
+const uvm = require('../../lib'),
+    expect = require('chai').expect;
 
+describe('uvm errors', function () {
     it('should raise an error if sandbox disconnect is somehow broken', function (done) {
-        var context = uvm.spawn();
+        let context = uvm.spawn();
 
         // delete context._disconnect to further sabotage the bridge
         delete context._disconnect;
@@ -17,7 +18,7 @@ describe('uvm errors', function () {
     });
 
     it('should dispatch cyclic object', function (done) {
-        var context = uvm.spawn({
+        let context = uvm.spawn({
                 bootCode: `
                     bridge.on('transfer', function (data) {
                         bridge.dispatch('transfer', data);

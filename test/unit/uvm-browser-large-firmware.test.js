@@ -1,6 +1,7 @@
 (typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
-    var _ = require('lodash'),
+    const _ = require('lodash'),
         uvm = require('../../lib'),
+        expect = require('chai').expect,
 
         /**
          * Creates a large string with a given character length.
@@ -24,12 +25,13 @@
                     self.addEventListener('message', init);
                 }(self));
             `;
-        },
-        firmwareUrl,
+        };
+
+    let firmwareUrl,
         worker;
 
     beforeEach(function () {
-        var fakeBundleSize = 5 * 1024 * 1024, // 10MB (5 million characters with 2 bytes each)
+        const fakeBundleSize = 5 * 1024 * 1024, // 10MB (5 million characters with 2 bytes each)
             largeJSStatement = `var x = '${getLargeString(fakeBundleSize)}';`;
 
         firmwareUrl = window.URL.createObjectURL(

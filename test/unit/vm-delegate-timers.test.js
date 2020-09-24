@@ -1,5 +1,6 @@
 (typeof window === 'undefined' ? describe : describe.skip)('node vm timer delegation', function () {
-    var vm = require('vm'),
+    const vm = require('vm'),
+        expect = require('chai').expect,
         timers = require('timers'),
         delegateTimers = require('../../lib/uvm/vm-delegate-timers');
 

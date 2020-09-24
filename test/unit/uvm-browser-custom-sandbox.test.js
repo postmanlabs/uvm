@@ -1,7 +1,9 @@
 (typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
-    var uvm = require('../../lib'),
-        firmware = require('../../firmware/sandbox-base'),
-        firmwareUrl,
+    const uvm = require('../../lib'),
+        expect = require('chai').expect,
+        firmware = require('../../firmware/sandbox-base');
+
+    let firmwareUrl,
         worker;
 
     beforeEach(function () {
