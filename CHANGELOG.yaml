@@ -6,6 +6,7 @@ master:
   fixed bugs:
     - GH-410 Deleted __uvm_* private variables from the global scope
   chores:
+    - GH-415 Updated Flatted dependency
     - >-
       GH-412 Updated .npmignore to prevent the addition of tests and config
       files in the published package
