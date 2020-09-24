@@ -1,13 +1,18 @@
+/* eslint-disable mocha/no-top-level-hooks */
 (typeof window !== 'undefined' ? describe : describe.skip)('missing API in browser', function () {
-    var uvm = require('../../lib'),
-        originalWorker = window.Worker;
+    const uvm = require('../../lib'),
+        expect = require('chai').expect;
+
+    let originalWorker;
 
     before(function () {
+        originalWorker = window.Worker;
         window.Worker = undefined;
     });
 
     after(function () {
         window.Worker = originalWorker;
+        originalWorker = null;
     });
 
     it('should connect a new context', function (done) {

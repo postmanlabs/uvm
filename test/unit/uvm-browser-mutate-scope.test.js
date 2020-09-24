@@ -1,13 +1,14 @@
+/* eslint-disable mocha/no-top-level-hooks */
 (typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
-    var uvm = require('../../lib'),
+    const uvm = require('../../lib'),
         firmware = require('../../firmware/sandbox-base'),
-        firmwareUrl,
+        expect = require('chai').expect;
+
+    let firmwareUrl,
         worker;
 
     beforeEach(function () {
-        firmwareUrl = window.URL.createObjectURL(
-            new Blob([firmware], { type: 'text/javascript' })
-        );
+        firmwareUrl = window.URL.createObjectURL(new Blob([firmware], { type: 'text/javascript' }));
         worker = new Worker(firmwareUrl);
     });
 
@@ -38,6 +39,5 @@
             });
             context.dispatch('loopback', 'this should return');
         });
-
     });
 });

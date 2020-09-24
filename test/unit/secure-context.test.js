@@ -1,8 +1,9 @@
-const uvm = require('../..');
+const uvm = require('../..'),
+    expect = require('chai').expect;
 
 describe('secure context', function () {
     it('should not be polluted with the global prototype', function (done) {
-        var context = uvm.spawn({
+        const context = uvm.spawn({
             bootCode: `
                 bridge.on('execute', function (data) {
                     bridge.dispatch('execute', {

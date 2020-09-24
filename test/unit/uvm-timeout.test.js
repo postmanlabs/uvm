@@ -1,5 +1,6 @@
 ((typeof window === 'undefined') ? describe : describe.skip)('uvm timeout option', function () {
-    var uvm = require('../../lib');
+    const uvm = require('../../lib'),
+        expect = require('chai').expect;
 
     // options.bootTimeout is not implemented in browser sandbox because there
     // is no way to interrupt an infinite loop.
