@@ -4,6 +4,8 @@
  * spec-sheet.
  */
 
+const expect = require('chai').expect;
+
 describe('JSDoc configuration', function () {
     var fs = require('fs'),
 

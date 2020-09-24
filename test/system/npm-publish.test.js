@@ -1,8 +1,9 @@
-const { expect } = require('chai'),
-    { exec } = require('shelljs');
+const expect = require('chai').expect,
+    // eslint-disable-next-line security/detect-child-process
+    { execSync: exec } = require('child_process');
 
 describe('npm publish', function () {
-    const packageInfo = JSON.parse(exec('npm pack --dry-run --json', { silent: true }).stdout)[0];
+    const packageInfo = JSON.parse(exec('npm pack --dry-run --json'))[0];
 
     it('should have a valid package name', function () {
         expect(packageInfo.name).to.equal('uvm');
