@@ -2,13 +2,13 @@
  * @fileOverview This test specs runs tests on the package.json file of repository. It has a set of strict tests on the
  * content of the file as well. Any change to package.json must be accompanied by valid test case in this spec-sheet.
  */
-var _ = require('lodash'),
+const fs = require('fs'),
+    _ = require('lodash'),
     yml = require('js-yaml'),
+    expect = require('chai').expect,
     parseIgnore = require('parse-gitignore');
 
 describe('project repository', function () {
-    var fs = require('fs');
-
     describe('package.json', function () {
         var content,
             json;

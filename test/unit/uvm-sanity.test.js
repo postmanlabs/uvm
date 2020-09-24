@@ -1,5 +1,4 @@
-const async = require('async'),
-    expect = require('chai').expect,
+const expect = require('chai').expect,
     uvm = require('../../lib'),
     isNode = (typeof window === 'undefined');
 
@@ -58,29 +57,37 @@ describe('uvm', function () {
 
         it('should not overflow dispatches when multiple vm is run', function (done) {
             // create two vms
-            async.times(2, function (n, next) {
+            uvm.spawn({
+                bootCode: `
+                    bridge.on('loopback', function (data) {
+                        bridge.dispatch('loopback', 0, data);
+                    });
+                `
+            }, function (err, context0) {
+                expect(err).to.be.null;
+
                 uvm.spawn({
                     bootCode: `
                         bridge.on('loopback', function (data) {
-                            bridge.dispatch('loopback', ${n}, data);
+                            bridge.dispatch('loopback', 1, data);
                         });
                     `
-                }, next);
-            }, function (err, contexts) {
-                if (err) { return done(err); }
+                }, function (err, context1) {
+                    expect(err).to.be.null;
 
-                contexts[0].on('loopback', function (source, data) {
-                    expect(source).to.equal(0);
-                    expect(data).to.equal('zero');
+                    context0.on('loopback', function (source, data) {
+                        expect(source).to.equal(0);
+                        expect(data).to.equal('zero');
 
-                    setTimeout(done, 100); // wait for other events before going done
+                        setTimeout(done, 100); // wait for other events before going done
+                    });
+
+                    context1.on('loopback', function () {
+                        expect.fail('second context receiving message overflowed from first');
+                    });
+
+                    context0.dispatch('loopback', 'zero');
                 });
-
-                contexts[1].on('loopback', function () {
-                    expect.fail('second context receiving message overflowed from first');
-                });
-
-                contexts[0].dispatch('loopback', 'zero');
             });
         });
 
