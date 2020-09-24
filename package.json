@@ -11,11 +11,10 @@
   },
   "scripts": {
     "test-browser": "node npm/test-browser.js",
-    "test-integration": "node npm/test-integration.js",
     "test-system": "node npm/test-system.js",
     "test-lint": "node npm/test-lint.js",
     "test-unit": "nyc --nycrc-path=.nycrc.js node npm/test-unit.js",
-    "test": "npm run test-lint && npm run test-system && npm run test-unit && npm run test-integration && npm run test-browser"
+    "test": "npm run test-lint && npm run test-system && npm run test-unit && npm run test-browser"
   },
   "keywords": [
     "eval",
