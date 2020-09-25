@@ -3,6 +3,7 @@ master:
     - GH-407 Using Web Workers for browser sandbox
   breaking changes:
     - GH-412 Dropped support for Node < v10
+    - GH-416 Convert UVM function to ES6 class
   fixed bugs:
     - GH-410 Deleted __uvm_* private variables from the global scope
   chores:
