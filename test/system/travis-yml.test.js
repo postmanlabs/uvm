@@ -21,11 +21,7 @@ describe('travis.yml', function () {
         expect(travisYAMLError && travisYAMLError.message || travisYAMLError).to.be.undefined;
     });
 
-    describe('strucure', function () {
-        it('should use the trusty Ubuntu distribution', function () {
-            expect(travisYAML.dist).to.equal('trusty');
-        });
-
+    describe('structure', function () {
         it('should have the language set to node', function () {
             expect(travisYAML.language).to.equal('node_js');
             expect(travisYAML.node_js).to.eql([10, 12]);
