@@ -9,6 +9,7 @@ master:
   chores:
     - GH-415 Updated Flatted dependency
     - GH-417 Automated gh-pages docs deployment
+    - GH-418 Automated releases and publish process
     - >-
       GH-412 Updated .npmignore to prevent the addition of tests and config
       files in the published package
