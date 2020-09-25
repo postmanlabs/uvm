@@ -3,14 +3,13 @@
  * content of the file as well. Any change to package.json must be accompanied by valid test case in this spec-sheet.
  */
 const fs = require('fs'),
-    _ = require('lodash'),
     yml = require('js-yaml'),
     expect = require('chai').expect,
     parseIgnore = require('parse-gitignore');
 
 describe('project repository', function () {
     describe('package.json', function () {
-        var content,
+        let content,
             json;
 
         it('should exist', function (done) {
@@ -131,7 +130,10 @@ describe('project repository', function () {
         });
 
         it('should have .gitignore coverage to be a subset of .npmignore coverage', function () {
-            expect(_.intersection(gitignore, npmignore)).to.eql(gitignore);
+            // eslint-disable-next-line arrow-body-style, arrow-parens
+            const intersection = [gitignore, npmignore].reduce((a, b) => a.filter(c => b.includes(c)));
+
+            expect(intersection).to.eql(gitignore);
         });
     });
 });

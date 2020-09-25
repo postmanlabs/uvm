@@ -7,6 +7,7 @@
 
 const chalk = require('chalk'),
     { ESLint } = require('eslint'),
+
     LINT_SOURCE_DIRS = [
         './test/**/*.js',
         './index.js',

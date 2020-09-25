@@ -1,7 +1,6 @@
 /* eslint-disable mocha/no-top-level-hooks */
 (typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
-    const _ = require('lodash'),
-        uvm = require('../../lib'),
+    const uvm = require('../../lib'),
         expect = require('chai').expect,
 
         /**
@@ -12,7 +11,7 @@
          * @returns {String}
          */
         getLargeString = function (size) {
-            return _.pad('', size, 'a');
+            return 'a'.repeat(size);
         },
         getFirmware = function (code) {
             return `
