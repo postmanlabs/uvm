@@ -1,19 +1,12 @@
 {
     "plugins": [
         "jsdoc",
-        "lodash",
         "security"
     ],
     "env": {
         "browser": true,
         "node": true,
         "es6": true
-    },
-    "globals": {},
-    "settings": {
-        "lodash": {
-            "pragma": "_"
-        }
     },
     "parserOptions": {
         "ecmaVersion": 2018
@@ -356,51 +349,6 @@
         "symbol-description": "off",
         "template-curly-spacing": "error",
         "yield-star-spacing": "error",
-
-        // Lodash
-        "lodash/callback-binding": "error",
-        "lodash/collection-method-value": "warn",
-        "lodash/collection-return": "error",
-        "lodash/no-double-unwrap": "error",
-        "lodash/no-extra-args": "error",
-        "lodash/no-unbound-this": "error",
-        "lodash/unwrap": "error",
-
-        "lodash/chain-style": ["error", "as-needed"],
-        "lodash/chaining": ["error", "always", 3],
-        "lodash/consistent-compose": ["error", "flow"],
-        "lodash/identity-shorthand": ["error", "always"],
-        "lodash/import-scope": "off",
-        "lodash/matches-prop-shorthand": ["error", "always"],
-        "lodash/matches-shorthand": ["error", "always", 3],
-        "lodash/no-commit": "error",
-        "lodash/path-style": ["error", "as-needed"],
-        "lodash/prefer-compact": "error",
-        "lodash/prefer-filter": ["off", 3],
-        "lodash/prefer-flat-map": "error",
-        "lodash/prefer-invoke-map": "error",
-        "lodash/prefer-map": "error",
-        "lodash/prefer-reject": ["error", 3],
-        "lodash/prefer-thru": "error",
-        "lodash/prefer-wrapper-method": "error",
-        "lodash/preferred-alias": "error",
-        "lodash/prop-shorthand": ["error", "always"],
-
-        "lodash/prefer-constant": "off",
-        "lodash/prefer-get": ["warn", 4],
-        "lodash/prefer-includes": ["error", {
-            "includeNative": true
-        }],
-        "lodash/prefer-is-nil": "error",
-        "lodash/prefer-lodash-chain": "error",
-        "lodash/prefer-lodash-method": "off",
-        "lodash/prefer-lodash-typecheck": "off",
-        "lodash/prefer-matches": ["off", 3],
-        "lodash/prefer-noop": "off",
-        "lodash/prefer-over-quantifier": "warn",
-        "lodash/prefer-some": "off",
-        "lodash/prefer-startswith": "off",
-        "lodash/prefer-times": "off",
 
         // JsDoc
         "jsdoc/check-param-names": "error",
