@@ -2,7 +2,7 @@
     const vm = require('vm'),
         expect = require('chai').expect,
         timers = require('timers'),
-        delegateTimers = require('../../lib/uvm/vm-delegate-timers');
+        delegateTimers = require('../../lib/vm-delegate-timers');
 
     it('should work', function () {
         var context = vm.createContext({});

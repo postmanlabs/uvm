@@ -1,7 +1,6 @@
-const Benchmark = require('benchmark'),
-    suite = new Benchmark.Suite(),
-    uuid = require('uuid').v4,
-    uvm = require('../../lib');
+const suite = new (require('benchmark')).Suite(),
+    uvm = require('../../lib'),
+    { randomNumber } = require('../../lib/utils');
 
 let context = uvm.spawn({
         bootCode: `
@@ -19,7 +18,7 @@ context.on('loopback', function (data) {
 suite.add('no object communication', {
     defer: true,
     fn: function (deferred) {
-        var id = uuid();
+        var id = randomNumber();
 
         defers[id] = deferred;
         context.dispatch('loopback', {
@@ -29,7 +28,7 @@ suite.add('no object communication', {
 }).add('flat object communication', {
     defer: true,
     fn: function (deferred) {
-        var id = uuid();
+        var id = randomNumber();
 
         defers[id] = deferred;
         context.dispatch('loopback', {
@@ -45,7 +44,7 @@ suite.add('no object communication', {
 }).add('one level nested object communication', {
     defer: true,
     fn: function (deferred) {
-        var id = uuid();
+        var id = randomNumber();
 
         defers[id] = deferred;
         context.dispatch('loopback', {
@@ -64,7 +63,7 @@ suite.add('no object communication', {
 }).add('two levels nested object communication', {
     defer: true,
     fn: function (deferred) {
-        var id = uuid();
+        var id = randomNumber();
 
         defers[id] = deferred;
         context.dispatch('loopback', {
@@ -85,7 +84,7 @@ suite.add('no object communication', {
     .add('full nested object communication', {
         defer: true,
         fn: function (deferred) {
-            var id = uuid();
+            var id = randomNumber();
 
             defers[id] = deferred;
             context.dispatch('loopback', {
@@ -107,7 +106,7 @@ suite.add('no object communication', {
     .add('recursive nested object communication', {
         defer: true,
         fn: function (deferred) {
-            var id = uuid(),
+            var id = randomNumber(),
                 testObject1,
                 testObject4;
 

@@ -1,7 +1,7 @@
 const vm = require('vm'),
     Flatted = require('flatted'),
     expect = require('chai').expect,
-    bridgeClient = require('../../lib/uvm/bridge-client');
+    bridgeClient = require('../../lib/bridge-client');
 
 describe('bridge-client', function () {
     it('should be a function', function () {

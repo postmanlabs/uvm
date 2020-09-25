@@ -4,8 +4,9 @@
 // This script is intended to execute all unit tests in the Chrome Browser.
 // ---------------------------------------------------------------------------------------------------------------------
 
-const chalk = require('chalk'),
-    path = require('path'),
+const path = require('path'),
+
+    chalk = require('chalk'),
     KarmaServer = require('karma').Server,
 
     KARMA_CONFIG_PATH = path.join(__dirname, '..', 'test', 'karma.conf');
