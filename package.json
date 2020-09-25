@@ -24,6 +24,7 @@
   ],
   "scripts": {
     "build-docs": "node npm/build-docs.js",
+    "release": "node npm/create-release.js",
     "test": "npm run test-lint && npm run test-system && npm run test-unit && npm run test-browser",
     "test-browser": "node npm/test-browser.js",
     "test-lint": "node npm/test-lint.js",
@@ -34,6 +35,7 @@
     "flatted": "3.0.5"
   },
   "devDependencies": {
+    "@postman/shipit": "0.1.0",
     "benchmark": "^2.1.4",
     "browserify": "^16.5.2",
     "chai": "^4.2.0",
