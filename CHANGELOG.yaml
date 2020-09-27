@@ -4,6 +4,7 @@ master:
   breaking changes:
     - GH-412 Dropped support for Node < v10
     - GH-416 Convert UVM function to ES6 class
+    - GH-422 Added connect method instead of async construction
   fixed bugs:
     - GH-410 Deleted __uvm_* private variables from the global scope
   chores:
