@@ -228,14 +228,17 @@ describe('uvm', function () {
                 });
 
                 context.dispatch('loopback', 1);
-                context.disconnect();
 
-                // reconnect
-                context.connect({ bootCode }, (err) => {
-                    if (err) { return done(err); }
-                    context.dispatch('loopback', 2);
-                    context.dispatch('disconnect');
-                });
+                setTimeout(() => {
+                    context.disconnect();
+
+                    // reconnect
+                    context.connect({ bootCode }, (err) => {
+                        if (err) { return done(err); }
+                        context.dispatch('loopback', 2);
+                        context.dispatch('disconnect');
+                    });
+                }, 100);
             });
         });
 
