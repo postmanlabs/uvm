@@ -1,7 +1,7 @@
 /* eslint-disable mocha/no-top-level-hooks */
 (typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
-    const uvm = require('../../lib'),
-        firmware = require('../../firmware/sandbox-base'),
+    const uvm = require('../../../lib'),
+        firmware = require('../../../firmware/sandbox-base'),
         expect = require('chai').expect;
 
     let firmwareUrl,

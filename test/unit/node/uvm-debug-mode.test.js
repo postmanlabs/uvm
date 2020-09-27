@@ -1,6 +1,6 @@
 /* eslint-disable mocha/no-top-level-hooks */
 const expect = require('chai').expect,
-    uvm = require('../../lib');
+    uvm = require('../../../lib');
 
 ((typeof window === 'undefined') ? describe : describe.skip)('uvm debug', function () {
     let originalConsole = console,

@@ -1,8 +1,8 @@
 /* eslint-disable mocha/no-top-level-hooks */
 (typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
-    const uvm = require('../../lib'),
+    const uvm = require('../../../lib'),
         expect = require('chai').expect,
-        firmware = require('../../firmware/sandbox-base');
+        firmware = require('../../../firmware/sandbox-base');
 
     let firmwareUrl,
         worker;
@@ -18,18 +18,22 @@
         worker = firmwareUrl = null;
     });
 
-    it('should error out if not loaded within bootTimeout limit', function (done) {
+    it('should load and dispatch messages', function (done) {
         uvm.spawn({
             _sandbox: worker,
-            bootTimeout: 1,
             bootCode: `
                 bridge.on('loopback', function (data) {
                     bridge.dispatch('loopback', data);
                 });
             `
-        }, function (err) {
-            expect(err).to.have.property('message', 'uvm: boot timed out after 1ms.');
-            done();
+        }, function (err, context) {
+            if (err) { return done(err); }
+
+            context.on('loopback', function (data) {
+                expect(data).to.equal('this should return');
+                done();
+            });
+            context.dispatch('loopback', 'this should return');
         });
     });
 });

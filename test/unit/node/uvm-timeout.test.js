@@ -1,5 +1,5 @@
 ((typeof window === 'undefined') ? describe : describe.skip)('uvm timeout option', function () {
-    const uvm = require('../../lib'),
+    const uvm = require('../../../lib'),
         expect = require('chai').expect;
 
     // options.bootTimeout is not implemented in browser sandbox because there

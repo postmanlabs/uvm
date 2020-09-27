@@ -1,6 +1,6 @@
 /* eslint-disable mocha/no-top-level-hooks */
 (typeof window !== 'undefined' ? describe : describe.skip)('custom sandbox in browser', function () {
-    const uvm = require('../../lib'),
+    const uvm = require('../../../lib'),
         expect = require('chai').expect,
 
         /**

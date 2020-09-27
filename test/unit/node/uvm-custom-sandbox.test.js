@@ -1,7 +1,7 @@
 /* eslint-disable mocha/no-top-level-hooks */
 (typeof window === 'undefined' ? describe : describe.skip)('custom sandbox in node', function () {
     const vm = require('vm'),
-        uvm = require('../../lib'),
+        uvm = require('../../../lib'),
         expect = require('chai').expect;
 
     let sandbox;

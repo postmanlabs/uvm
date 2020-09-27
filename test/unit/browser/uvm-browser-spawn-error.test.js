@@ -1,13 +1,15 @@
 /* eslint-disable mocha/no-top-level-hooks */
-(typeof window !== 'undefined' ? describe : describe.skip)('missing API in browser', function () {
-    const uvm = require('../../lib'),
+(typeof window !== 'undefined' ? describe : describe.skip)('spawn error in browser', function () {
+    const uvm = require('../../../lib'),
         expect = require('chai').expect;
 
     let originalWorker;
 
     before(function () {
         originalWorker = window.Worker;
-        window.Worker = undefined;
+        window.Worker = function () {
+            throw new Error('CSP error!');
+        };
     });
 
     after(function () {
@@ -15,10 +17,10 @@
         originalWorker = null;
     });
 
-    it('should connect a new context', function (done) {
+    it('should error out if worker can\'t be loaded', function (done) {
         uvm.spawn({}, function (err) {
             expect(err).to.be.an('error').that.has.property('message',
-                'uvm: unable to setup communication bridge, missing required APIs');
+                'uvm: unable to spawn worker.\nCSP error!');
             done();
         });
     });
