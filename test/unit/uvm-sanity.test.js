@@ -165,5 +165,102 @@ describe('uvm', function () {
                 context.dispatch('loopback', 'this never returns');
             });
         });
+
+        it('should dispatch all the pending messages in FIFO order', function (done) {
+            let vm = new uvm(),
+                loopbackData = [];
+
+            vm.on('error', done);
+            vm.on('loopback', (data) => {
+                loopbackData.push(data);
+            });
+            vm.on('disconnect', () => {
+                expect(loopbackData).to.eql([1, 2, 3, 4]);
+                vm.disconnect();
+                done();
+            });
+
+            // dispatch before connect
+            vm.dispatch('loopback', 1);
+            vm.dispatch('loopback', 2);
+            vm.dispatch('loopback', 3);
+
+            vm.connect({
+                bootCode: `
+                    bridge.on('disconnect', function () {
+                        bridge.dispatch('disconnect');
+                    });
+
+                    bridge.on('loopback', function (data) {
+                        bridge.dispatch('loopback', data);
+                    });
+                `
+            }, (err) => {
+                if (err) {
+                    return done(err);
+                }
+
+                vm.dispatch('loopback', 4);
+                vm.dispatch('disconnect');
+            });
+        });
+
+        it('should allow reconnecting from the same context', function (done) {
+            let loopbackData = [],
+                bootCode = `
+                bridge.on('disconnect', function () {
+                    bridge.dispatch('disconnect');
+                });
+
+                bridge.on('loopback', function (data) {
+                    bridge.dispatch('loopback', data);
+                });
+            `;
+
+            uvm.spawn({ bootCode }, (err, context) => {
+                if (err) { return done(err); }
+
+                context.on('loopback', (data) => { loopbackData.push(data); });
+                context.on('disconnect', () => {
+                    expect(loopbackData).to.eql([1, 2]);
+                    context.disconnect();
+                    done();
+                });
+
+                context.dispatch('loopback', 1);
+                context.disconnect();
+
+                // reconnect
+                context.connect({ bootCode }, (err) => {
+                    if (err) { return done(err); }
+                    context.dispatch('loopback', 2);
+                    context.dispatch('disconnect');
+                });
+            });
+        });
+
+        it('should not create multiple connection on same instance', function (done) {
+            let vm = new uvm();
+
+            vm.on('loopback', (data) => {
+                expect(data).to.equal('first');
+                vm.disconnect();
+                done();
+            });
+
+            vm.connect({
+                bootCode: 'bridge.on("loopback", () => bridge.dispatch("loopback", "first"))'
+            }, (err) => {
+                if (err) { return done(err); }
+
+                vm.connect({
+                    bootCode: 'bridge.on("loopback", () => bridge.dispatch("loopback", "second"))'
+                }, (err, context) => {
+                    if (err) { return done(err); }
+
+                    context.dispatch('loopback');
+                });
+            });
+        });
     });
 });
