@@ -1,10 +1,48 @@
 const expect = require('chai').expect,
-    uvm = require('../../lib'),
-    isNode = (typeof window === 'undefined');
+    uvm = require('../../lib');
 
 describe('uvm', function () {
     it('should connect a new context', function (done) {
         uvm.spawn({}, done);
+    });
+
+    it('should dispatch all the pending messages in FIFO order', function (done) {
+        let vm = new uvm(),
+            loopbackData = [];
+
+        vm.on('error', done);
+        vm.on('loopback', (data) => {
+            loopbackData.push(data);
+        });
+        vm.on('disconnect', () => {
+            expect(loopbackData).to.eql([1, 2, 3, 4]);
+            vm.disconnect();
+            done();
+        });
+
+        // dispatch before connect
+        vm.dispatch('loopback', 1);
+        vm.dispatch('loopback', 2);
+        vm.dispatch('loopback', 3);
+
+        vm.connect({
+            bootCode: `
+                bridge.on('disconnect', function () {
+                    bridge.dispatch('disconnect');
+                });
+
+                bridge.on('loopback', function (data) {
+                    bridge.dispatch('loopback', data);
+                });
+            `
+        }, (err) => {
+            if (err) {
+                return done(err);
+            }
+
+            vm.dispatch('loopback', 4);
+            vm.dispatch('disconnect');
+        });
     });
 
     describe('context', function () {
@@ -15,6 +53,7 @@ describe('uvm', function () {
             expect(context).to.have.property('dispatch').that.is.a('function');
             expect(context).to.have.property('emit').that.is.a('function');
             expect(context).to.have.property('on').that.is.a('function');
+            expect(context).to.have.property('connect').that.is.a('function');
             expect(context).to.have.property('disconnect').that.is.a('function');
         });
 
@@ -42,17 +81,6 @@ describe('uvm', function () {
             });
 
             context.dispatch('loopback', sourceData);
-        });
-
-        (isNode ? it : it.skip)('should pass load error on broken boot code', function (done) {
-            uvm.spawn({
-                bootCode: `
-                    throw new Error('error in bootCode');
-                `
-            }, function (err) {
-                expect(err).to.be.an('error').that.has.property('message', 'error in bootCode');
-                done();
-            });
         });
 
         it('should not overflow dispatches when multiple vm is run', function (done) {
@@ -91,31 +119,6 @@ describe('uvm', function () {
             });
         });
 
-        it('should not leak __uvm_* private variables in global scope', function (done) {
-            uvm.spawn({
-                bootCode: `
-                    bridge.on('getProps', function () {
-                        bridge.dispatch('getProps', Object.getOwnPropertyNames(Function('return this')()));
-                    });
-                `
-            }, function (err, context) {
-                expect(err).to.be.null;
-
-                context.on('error', done);
-                context.on('getProps', function (data) {
-                    expect(data).to.be.an('array').that.is.not.empty;
-
-                    for (let key of data) {
-                        expect(key).to.not.have.string('__uvm');
-                    }
-
-                    done();
-                });
-
-                context.dispatch('getProps');
-            });
-        });
-
         it('should restore dispatcher if it is deleted', function (done) {
             uvm.spawn({
                 bootCode: `
@@ -128,7 +131,7 @@ describe('uvm', function () {
                     });
                 `
             }, function (err, context) {
-                expect(err).to.not.be.an('object');
+                expect(err).to.be.null;
 
                 context.on('error', done);
                 context.on('loopback', function (data) {
@@ -138,70 +141,6 @@ describe('uvm', function () {
 
                 context.dispatch('deleteDispatcher');
                 context.dispatch('loopback', 'this returns');
-            });
-        });
-
-        it('should trigger error if dispatched post disconnection', function (done) {
-            uvm.spawn({
-                bootCode: `
-                    bridge.on('loopback', function (data) {
-                        bridge.dispatch('loopback', data);
-                    });
-                `
-            }, function (err, context) {
-                expect(err).to.not.be.an('object');
-
-                context.on('error', function (err) {
-                    expect(err).to.be.an('error').that.has.property('message',
-                        'uvm: unable to dispatch "loopback" post disconnection.');
-                    done();
-                });
-
-                context.on('loopback', function () {
-                    throw new Error('loopback callback was unexpected post disconnection');
-                });
-
-                context.disconnect();
-                context.dispatch('loopback', 'this never returns');
-            });
-        });
-
-        it('should dispatch all the pending messages in FIFO order', function (done) {
-            let vm = new uvm(),
-                loopbackData = [];
-
-            vm.on('error', done);
-            vm.on('loopback', (data) => {
-                loopbackData.push(data);
-            });
-            vm.on('disconnect', () => {
-                expect(loopbackData).to.eql([1, 2, 3, 4]);
-                vm.disconnect();
-                done();
-            });
-
-            // dispatch before connect
-            vm.dispatch('loopback', 1);
-            vm.dispatch('loopback', 2);
-            vm.dispatch('loopback', 3);
-
-            vm.connect({
-                bootCode: `
-                    bridge.on('disconnect', function () {
-                        bridge.dispatch('disconnect');
-                    });
-
-                    bridge.on('loopback', function (data) {
-                        bridge.dispatch('loopback', data);
-                    });
-                `
-            }, (err) => {
-                if (err) {
-                    return done(err);
-                }
-
-                vm.dispatch('loopback', 4);
-                vm.dispatch('disconnect');
             });
         });
 

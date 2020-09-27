@@ -6,7 +6,7 @@ describe('flatted dependency', function () {
     // manually copy node_modules/flatted/min.js and replace it in where the previous
     // circular-json code existed within lib/bridge-client.js. Finally, we should replace all backslash "\"
     // characters with double backslash "\\". (if any)
-    it('must be version locked, unless modified intentionally', function () {
+    it('should be version locked, unless modified intentionally', function () {
         expect(require('../../package.json').dependencies.flatted).to.equal('3.0.5');
     });
 });
