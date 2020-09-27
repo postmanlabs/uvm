@@ -1,6 +1,7 @@
 master:
   new features:
     - GH-407 Using Web Workers for browser sandbox
+    - GH-423 Added support for bootTimeout on browser bridge
   breaking changes:
     - GH-412 Dropped support for Node < v10
     - GH-416 Convert UVM function to ES6 class
