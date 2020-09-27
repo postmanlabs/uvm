@@ -1,7 +1,7 @@
 const uvm = require('../..'),
     expect = require('chai').expect;
 
-describe('secure context', function () {
+describe('uvm security', function () {
     it('should not be polluted with the global prototype', function (done) {
         const context = uvm.spawn({
             bootCode: `
@@ -22,5 +22,30 @@ describe('secure context', function () {
         });
 
         context.dispatch('execute');
+    });
+
+    it('should not leak __uvm_* private variables in global scope', function (done) {
+        uvm.spawn({
+            bootCode: `
+                bridge.on('getProps', function () {
+                    bridge.dispatch('getProps', Object.getOwnPropertyNames(Function('return this')()));
+                });
+            `
+        }, function (err, context) {
+            expect(err).to.be.null;
+
+            context.on('error', done);
+            context.on('getProps', function (data) {
+                expect(data).to.be.an('array').that.is.not.empty;
+
+                for (let key of data) {
+                    expect(key).to.not.have.string('__uvm');
+                }
+
+                done();
+            });
+
+            context.dispatch('getProps');
+        });
     });
 });

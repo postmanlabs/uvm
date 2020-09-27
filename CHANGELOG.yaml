@@ -10,6 +10,7 @@ master:
     - GH-410 Deleted __uvm_* private variables from the global scope
   chores:
     - GH-415 Updated Flatted dependency
+    - GH-424 Refactored unit tests
     - GH-417 Automated gh-pages docs deployment
     - GH-418 Automated releases and publish process
     - >-
