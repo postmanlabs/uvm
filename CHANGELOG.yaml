@@ -1,4 +1,5 @@
-master:
+2.0.0:
+  date: 2020-09-29
   new features:
     - GH-407 Using Web Workers for browser sandbox
     - GH-423 Added support for bootTimeout on browser bridge
