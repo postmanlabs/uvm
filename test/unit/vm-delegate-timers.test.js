@@ -1,10 +1,12 @@
 (typeof window === 'undefined' ? describe : describe.skip)('node vm timer delegation', function () {
-    var vm = require('vm'),
+    const vm = require('vm'),
+        expect = require('chai').expect,
         timers = require('timers'),
-        delegateTimers = require('../../lib/uvm/vm-delegate-timers');
+        delegateTimers = require('../../lib/vm-delegate-timers');
 
     it('should work', function () {
         var context = vm.createContext({});
+
         expect(function () {
             delegateTimers(context);
         }).to.not.throw();
@@ -141,6 +143,7 @@
 
                 context.redone = function () {
                     var _done = done; // ensure done is called once
+
                     done = function () {}; // eslint-disable-line no-empty-function
                     _done(new Error('unable to clear immediately queued function'));
                 };
@@ -155,7 +158,7 @@
     });
 
     it('should not leave the original timer function exposed in global (security)', function (done) {
-        var context = delegateTimers(vm.createContext({ expect: expect }));
+        var context = delegateTimers(vm.createContext({ expect }));
 
         context.done = function (err, res) {
             expect(err).to.be.null;
@@ -186,7 +189,7 @@
     });
 
     it('should not allow access to original context from setter (security)', function (done) {
-        var context = delegateTimers(vm.createContext({ expect: expect }));
+        var context = delegateTimers(vm.createContext({ expect }));
 
         context.done = function () {
             expect(Function).to.not.have.property('setFromVM');
@@ -204,7 +207,7 @@
     });
 
     it('should not allow access from setter returned objects (security)', function (done) {
-        var context = delegateTimers(vm.createContext({ expect: expect }));
+        var context = delegateTimers(vm.createContext({ expect }));
 
         context.done = function () {
             expect(Object).to.not.have.property('setFromVM');

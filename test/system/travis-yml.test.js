@@ -1,7 +1,9 @@
+const fs = require('fs'),
+    yaml = require('js-yaml'),
+    expect = require('chai').expect;
+
 describe('travis.yml', function () {
-    var fs = require('fs'),
-        yaml = require('js-yaml'),
-        travisYAML,
+    let travisYAML,
         travisYAMLError;
 
     try {
@@ -19,14 +21,10 @@ describe('travis.yml', function () {
         expect(travisYAMLError && travisYAMLError.message || travisYAMLError).to.be.undefined;
     });
 
-    describe('strucure', function () {
-        it('should use the trusty Ubuntu distribution', function () {
-            expect(travisYAML.dist).to.equal('trusty');
-        });
-
+    describe('structure', function () {
         it('should have the language set to node', function () {
             expect(travisYAML.language).to.equal('node_js');
-            expect(travisYAML.node_js).to.eql(['6', '8', '10']);
+            expect(travisYAML.node_js).to.eql([10, 12]);
         });
 
         it('should have a valid Slack notification token', function () {

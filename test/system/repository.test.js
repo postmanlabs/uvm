@@ -2,15 +2,14 @@
  * @fileOverview This test specs runs tests on the package.json file of repository. It has a set of strict tests on the
  * content of the file as well. Any change to package.json must be accompanied by valid test case in this spec-sheet.
  */
-var _ = require('lodash'),
+const fs = require('fs'),
     yml = require('js-yaml'),
+    expect = require('chai').expect,
     parseIgnore = require('parse-gitignore');
 
 describe('project repository', function () {
-    var fs = require('fs');
-
     describe('package.json', function () {
-        var content,
+        let content,
             json;
 
         it('should exist', function (done) {
@@ -37,7 +36,7 @@ describe('project repository', function () {
 
             it('should have a valid version string in form of <major>.<minor>.<revision>', function () {
                 expect(json.version)
-                    // eslint-disable-next-line max-len
+                    // eslint-disable-next-line max-len, security/detect-unsafe-regex
                     .to.match(/^((\d+)\.(\d+)\.(\d+))(?:-([\dA-Za-z-]+(?:\.[\dA-Za-z-]+)*))?(?:\+([\dA-Za-z-]+(?:\.[\dA-Za-z-]+)*))?$/);
             });
         });
@@ -49,6 +48,7 @@ describe('project repository', function () {
 
             it('should point to a valid semver', function () {
                 Object.keys(json.devDependencies).forEach(function (dependencyName) {
+                    // eslint-disable-next-line security/detect-non-literal-regexp
                     expect(json.devDependencies[dependencyName]).to.match(new RegExp('((\\d+)\\.(\\d+)\\.(\\d+))(?:-' +
                         '([\\dA-Za-z\\-]+(?:\\.[\\dA-Za-z\\-]+)*))?(?:\\+([\\dA-Za-z\\-]+(?:\\.[\\dA-Za-z\\-]+)*))?$'));
                 });
@@ -130,7 +130,10 @@ describe('project repository', function () {
         });
 
         it('should have .gitignore coverage to be a subset of .npmignore coverage', function () {
-            expect(_.intersection(gitignore, npmignore)).to.eql(gitignore);
+            // eslint-disable-next-line arrow-body-style, arrow-parens
+            const intersection = [gitignore, npmignore].reduce((a, b) => a.filter(c => b.includes(c)));
+
+            expect(intersection).to.eql(gitignore);
         });
     });
 });

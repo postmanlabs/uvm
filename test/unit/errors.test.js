@@ -1,8 +1,10 @@
-describe('uvm errors', function () {
-    var uvm = require('../../lib');
+const uvm = require('../../lib'),
+    expect = require('chai').expect,
+    isNode = (typeof window === 'undefined');
 
+describe('uvm errors', function () {
     it('should raise an error if sandbox disconnect is somehow broken', function (done) {
-        var context = uvm.spawn();
+        let context = uvm.spawn();
 
         // delete context._disconnect to further sabotage the bridge
         delete context._disconnect;
@@ -17,7 +19,7 @@ describe('uvm errors', function () {
     });
 
     it('should dispatch cyclic object', function (done) {
-        var context = uvm.spawn({
+        let context = uvm.spawn({
                 bootCode: `
                     bridge.on('transfer', function (data) {
                         bridge.dispatch('transfer', data);
@@ -74,7 +76,7 @@ describe('uvm errors', function () {
                 });
             `
         }, function (err, context) {
-            expect(err).to.not.be.an('object');
+            expect(err).to.be.null;
 
             context.on('error', done);
             context.on('loopback', function (data) {
@@ -85,6 +87,42 @@ describe('uvm errors', function () {
 
             // eslint-disable-next-line no-useless-escape
             context.dispatch('loopback', 'this has \n "escape" \'characters\"');
+        });
+    });
+
+    it('should trigger error if dispatched post disconnection', function (done) {
+        uvm.spawn({
+            bootCode: `
+                bridge.on('loopback', function (data) {
+                    bridge.dispatch('loopback', data);
+                });
+            `
+        }, function (err, context) {
+            expect(err).to.be.null;
+
+            context.on('error', function (err) {
+                expect(err).to.be.an('error').that.has.property('message',
+                    'uvm: unable to dispatch "loopback" post disconnection.');
+                done();
+            });
+
+            context.on('loopback', function () {
+                throw new Error('loopback callback was unexpected post disconnection');
+            });
+
+            context.disconnect();
+            context.dispatch('loopback', 'this never returns');
+        });
+    });
+
+    (isNode ? it : it.skip)('should pass load error on broken boot code', function (done) {
+        uvm.spawn({
+            bootCode: `
+                throw new Error('error in bootCode');
+            `
+        }, function (err) {
+            expect(err).to.be.an('error').that.has.property('message', 'error in bootCode');
+            done();
         });
     });
 });

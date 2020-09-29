@@ -1,73 +1,41 @@
 #!/usr/bin/env node
+/* eslint-env node, es6 */
 // ---------------------------------------------------------------------------------------------------------------------
 // This script is intended to execute all unit tests.
 // ---------------------------------------------------------------------------------------------------------------------
-/* eslint-env node, es6 */
 
-// set directories and files for test and coverage report
-var path = require('path'),
+const path = require('path'),
 
-    NYC = require('nyc'),
-    sh = require('shelljs'),
     chalk = require('chalk'),
-    expect = require('chai').expect,
+    Mocha = require('mocha'),
     recursive = require('recursive-readdir'),
 
-    COV_REPORT_PATH = '.coverage',
     SPEC_SOURCE_DIR = path.join('test', 'unit');
 
 module.exports = function (exit) {
     // banner line
-    console.log(chalk.yellow.bold('Running unit tests using mocha on node...'));
+    console.info(chalk.yellow.bold('Running unit tests using mocha on node...'));
 
-    sh.test('-d', COV_REPORT_PATH) && sh.rm('-rf', COV_REPORT_PATH);
-    sh.mkdir('-p', COV_REPORT_PATH);
-
-    var Mocha = require('mocha'),
-        nyc = new NYC({
-            hookRequire: true,
-            reporter: ['text', 'lcov', 'text-summary', 'json'],
-            reportDir: COV_REPORT_PATH,
-            tempDirectory: COV_REPORT_PATH
-        });
-
-    nyc.wrap();
     // add all spec files to mocha
-    recursive(SPEC_SOURCE_DIR, function (err, files) {
-        if (err) { console.error(err); return exit(1); }
+    recursive(SPEC_SOURCE_DIR, (err, files) => {
+        if (err) {
+            console.error(err);
 
-        var mocha = new Mocha({ timeout: 1000 * 60 });
+            return exit(1);
+        }
 
-        // specially load bootstrap file
-        mocha.addFile(path.join(SPEC_SOURCE_DIR, '_bootstrap.js'));
+        const mocha = new Mocha({ timeout: 1000 * 60 });
 
-        files.filter(function (file) { // extract all test files
+        files.filter((file) => { // extract all test files
             return (file.substr(-8) === '.test.js');
         }).forEach(mocha.addFile.bind(mocha));
 
         // start the mocha run
-        global.expect = expect; // for easy reference
-
-        mocha.run(function (runError) {
-            // clear references and overrides
-            delete global.expect;
-
+        mocha.run((runError) => {
             runError && console.error(runError.stack || runError);
 
-            nyc.reset();
-            nyc.writeCoverageFile();
-            nyc.report();
-            nyc.checkCoverage({
-                statements: 75,
-                branches: 50,
-                functions: 60,
-                lines: 80
-            });
-
-            exit(process.exitCode || runError ? 1 : 0);
+            exit(runError || process.exitCode ? 1 : 0);
         });
-        // cleanup
-        mocha = null;
     });
 };
 
