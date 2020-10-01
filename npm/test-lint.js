@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-env node, es6 */
 // ---------------------------------------------------------------------------------------------------------------------
 // This script is intended to contain all actions pertaining to code style checking, linting and normalization.
 // ---------------------------------------------------------------------------------------------------------------------
