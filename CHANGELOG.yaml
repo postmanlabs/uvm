@@ -1,3 +1,7 @@
+master:
+  chores:
+    - GH-428 Updated Flatted dependency
+
 2.0.0:
   date: 2020-09-29
   new features:

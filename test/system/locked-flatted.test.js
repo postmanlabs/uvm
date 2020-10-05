@@ -7,6 +7,6 @@ describe('flatted dependency', function () {
     // circular-json code existed within lib/bridge-client.js. Finally, we should replace all backslash "\"
     // characters with double backslash "\\". (if any)
     it('should be version locked, unless modified intentionally', function () {
-        expect(require('../../package.json').dependencies.flatted).to.equal('3.0.5');
+        expect(require('../../package.json').dependencies.flatted).to.equal('3.1.0');
     });
 });
