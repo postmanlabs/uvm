@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-/* eslint-env node, es6 */
 // ---------------------------------------------------------------------------------------------------------------------
-// This script is intended to generate documentation for this module
+// This script is intended to generate documentation for this module.
 // ---------------------------------------------------------------------------------------------------------------------
 
 const path = require('path'),

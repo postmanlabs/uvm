@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+// ---------------------------------------------------------------------------------------------------------------------
+// This script is intended to automate the versioning and changelog generation process for a release.
+// ---------------------------------------------------------------------------------------------------------------------
+
 
 const shipit = require('@postman/shipit'),
 

@@ -1,6 +1,6 @@
 {
   "name": "uvm",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Universal Virtual Machine for Node and Browser",
   "author": "Postman Inc.",
   "license": "Apache-2.0",
@@ -32,7 +32,7 @@
     "test-unit": "nyc --nycrc-path=.nycrc.js node npm/test-unit.js"
   },
   "dependencies": {
-    "flatted": "3.0.5"
+    "flatted": "3.1.0"
   },
   "devDependencies": {
     "@postman/shipit": "0.1.0",
@@ -41,13 +41,12 @@
     "chai": "^4.2.0",
     "chalk": "^4.1.0",
     "editorconfig": "^0.15.3",
-    "eslint": "^7.9.0",
-    "eslint-plugin-jsdoc": "^30.5.1",
+    "eslint": "^7.10.0",
+    "eslint-plugin-jsdoc": "^30.6.3",
     "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-security": "^1.4.0",
     "js-yaml": "^3.14.0",
     "jsdoc": "^3.6.6",
-    "jsdoc-to-markdown": "^6.0.1",
     "karma": "^5.2.2",
     "karma-browserify": "^7.0.0",
     "karma-chrome-launcher": "^3.1.0",
