@@ -45,7 +45,7 @@
     "eslint-plugin-jsdoc": "^30.6.3",
     "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-security": "^1.4.0",
-    "js-yaml": "^3.14.0",
+    "js-yaml": "^4.0.0",
     "jsdoc": "^3.6.6",
     "karma": "^5.2.2",
     "karma-browserify": "^8.0.0",
