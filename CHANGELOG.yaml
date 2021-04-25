@@ -1,4 +1,5 @@
-unreleased:
+2.0.2:
+  date: 2021-04-25
   chores:
     - Added secure codecov publish script
     - Updated dependencies
