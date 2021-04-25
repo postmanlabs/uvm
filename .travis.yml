@@ -21,7 +21,7 @@ jobs:
     # create a new release if $CREATE_RELEASE is set
     - stage: Create Release
       if: env(CREATE_RELEASE) = true AND type = api AND tag IS blank
-      os: osx
+      os: linux
       node_js: 12
       git:
         depth: false # disable --depth
@@ -45,7 +45,7 @@ jobs:
     # publish npm package on tagged builds
     - stage: Publish Package
       if: tag IS present
-      os: osx
+      os: linux
       node_js: 12
       git:
         depth: false # disable --depth
@@ -82,6 +82,11 @@ jobs:
         commit_message: Deploy to %{target_branch}
         on:
           branch: main
+
+before_install:
+  - '[[ "$CREATE_RELEASE" == "true" || "$TRAVIS_BRANCH" == "main" ]] && true || unset encrypted_05f822b6caa8_key'
+  - '[[ "$CREATE_RELEASE" == "true" || "$TRAVIS_BRANCH" == "main" ]] && true || unset encrypted_05f822b6caa8_iv'
+  - '[[ -z "$TRAVIS_TAG" ]] && unset NPM_API_TOKEN || true'
 
 notifications:
   slack:
