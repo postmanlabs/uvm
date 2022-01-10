@@ -55,7 +55,7 @@
     "karma-mocha-reporter": "^2.2.5",
     "mocha": "^9.0.0",
     "nyc": "^15.1.0",
-    "packity": "^0.3.2",
+    "packity": "^0.3.3",
     "parse-gitignore": "^1.0.1",
     "postman-jsdoc-theme": "^0.0.3",
     "recursive-readdir": "^2.2.2",
