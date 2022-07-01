@@ -116,6 +116,41 @@ describe('bridge-client', function () {
             `, context);
         });
 
+        it('should trigger registered one-time event listener only once', function (done) {
+            let context = vm.createContext({
+                expect,
+                __uvm_emit () {
+                    throw new Error('Nothing should be emitted');
+                },
+                done (count) {
+                    expect(count).to.be.eql({ on: 2, once: 1 });
+                    done();
+                }
+            });
+
+            vm.runInContext(bridgeClient(), context);
+
+            vm.runInContext(`
+                const count = { on: 0, once: 0 };
+
+                bridge.once('loopback', function () {
+                    count.once++;
+                });
+
+                bridge.on('loopback', function () {
+                    count.on++;
+
+                    if (count.on === 2) {
+                        done(count);
+                    } else {
+                        bridge.emit('loopback');
+                    }
+                });
+
+                bridge.emit('loopback');
+            `, context);
+        });
+
         it('should trigger multiple registered event listeners in order', function (done) {
             var context = vm.createContext({
                 expect,
