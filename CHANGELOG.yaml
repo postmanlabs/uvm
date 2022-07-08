@@ -1,5 +1,6 @@
 unreleased:
   chores:
+    - Run Travis coverage step in latest LTS Node.js release
     - Updated dependencies
 
 2.0.2:
