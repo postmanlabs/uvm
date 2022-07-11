@@ -33,7 +33,7 @@
     "test-unit": "nyc --nycrc-path=.nycrc.js node npm/test-unit.js"
   },
   "dependencies": {
-    "flatted": "3.1.1"
+    "flatted": "3.2.6"
   },
   "devDependencies": {
     "@postman/shipit": "^0.3.0",
