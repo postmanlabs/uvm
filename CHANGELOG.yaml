@@ -1,6 +1,7 @@
 unreleased:
   chores:
     - Run Travis coverage step in latest LTS Node.js release
+    - GH-604 Updated Flatted dependency
     - Updated dependencies
 
 2.0.2:
