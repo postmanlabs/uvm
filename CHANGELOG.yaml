@@ -1,4 +1,5 @@
-unreleased:
+2.1.0:
+  date: 2022-07-11
   new features:
     - GH-603 Added support for `bridge.once`
   chores:
