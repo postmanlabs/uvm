@@ -1,3 +1,12 @@
+2.1.0:
+  date: 2022-07-11
+  new features:
+    - GH-603 Added support for `bridge.once`
+  chores:
+    - Run Travis coverage step in latest LTS Node.js release
+    - GH-604 Updated Flatted dependency
+    - Updated dependencies
+
 2.0.2:
   date: 2021-04-25
   chores:
