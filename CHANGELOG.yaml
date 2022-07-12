@@ -1,3 +1,8 @@
+2.1.1:
+  date: 2022-07-12
+  fixed bugs:
+    - Removed global bridge access in `bridge.once` listener
+
 2.1.0:
   date: 2022-07-11
   new features:
