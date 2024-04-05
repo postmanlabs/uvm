@@ -1,4 +1,6 @@
 unreleased:
+  new feature:
+    - Replaced Node VM with Worker threads
   chores:
     - Add GitHub CI and remove Travis
 

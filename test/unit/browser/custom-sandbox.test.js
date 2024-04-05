@@ -1,7 +1,7 @@
 (typeof window !== 'undefined' ? describe : describe.skip)('browser bridge', function () {
     const uvm = require('../../../lib'),
         expect = require('chai').expect,
-        firmware = require('../../../firmware/sandbox-base');
+        firmware = require('../../../firmware/sandbox-base.browser');
 
     describe('with custom sandbox', function () {
         let firmwareUrl,
