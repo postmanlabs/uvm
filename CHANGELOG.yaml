@@ -1,6 +1,8 @@
 unreleased:
+  breaking changes:
+    - Dropped support for Node < v16
   chores:
-    - Add GitHub CI and remove Travis
+    - Added GitHub CI and remove Travis
 
 2.1.1:
   date: 2022-07-12
