@@ -1,8 +1,8 @@
 unreleased:
   breaking changes:
-    - Dropped support for Node < v16
+    - GH-668 Dropped support for Node < v16
   chores:
-    - Added GitHub CI and remove Travis
+    - GH-667 Added GitHub CI and remove Travis
 
 2.1.1:
   date: 2022-07-12
