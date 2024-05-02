@@ -8,6 +8,6 @@ describe('flatted dependency', function () {
     // 'lib/bridge-client.js'. Finally, we should replace all backslash "\"
     // characters with double backslash "\\". (if any)
     it('should be version locked, unless modified intentionally', function () {
-        expect(require('../../package.json').dependencies.flatted).to.equal('3.2.6');
+        expect(require('../../package.json').dependencies.flatted).to.equal('3.3.1');
     });
 });
