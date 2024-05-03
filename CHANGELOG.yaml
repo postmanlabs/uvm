@@ -1,8 +1,12 @@
 unreleased:
   new feature:
     - Replaced Node VM with Worker threads
+  breaking changes:
+    - GH-668 Dropped support for Node < v16
   chores:
-    - Add GitHub CI and remove Travis
+    - GH-667 Added GitHub CI and remove Travis
+    - Updated ESLint rules
+    - Updated dependencies
 
 2.1.1:
   date: 2022-07-12
