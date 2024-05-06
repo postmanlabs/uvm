@@ -18,7 +18,7 @@
         it('should error out if required browser APIs are missing', function (done) {
             uvm.spawn({}, function (err) {
                 expect(err).to.be.an('error').that.has.property('message',
-                    'uvm: unable to setup communication bridge, missing required APIs');
+                    'uvm: unable to spawn worker.\nMissing required APIs');
                 done();
             });
         });
