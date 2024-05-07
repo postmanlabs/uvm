@@ -29,8 +29,7 @@
 
                 context.on('loopback', function (data) {
                     expect(data).to.equal('bar');
-                    context.disconnect();
-                    done();
+                    context.disconnect(done);
                 });
                 context.dispatch('loopback');
             });
