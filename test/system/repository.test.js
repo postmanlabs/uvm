@@ -36,7 +36,7 @@ describe('project repository', function () {
 
             it('should have a valid version string in form of <major>.<minor>.<revision>', function () {
                 expect(json.version)
-                    // eslint-disable-next-line max-len, security/detect-unsafe-regex
+                    // eslint-disable-next-line @stylistic/js/max-len, security/detect-unsafe-regex
                     .to.match(/^((\d+)\.(\d+)\.(\d+))(?:-([\dA-Za-z-]+(?:\.[\dA-Za-z-]+)*))?(?:\+([\dA-Za-z-]+(?:\.[\dA-Za-z-]+)*))?$/);
             });
         });
@@ -106,8 +106,8 @@ describe('project repository', function () {
     describe('.ignore files', function () {
         var gitignorePath = '.gitignore',
             npmignorePath = '.npmignore',
-            npmignore = parseIgnore(fs.readFileSync(npmignorePath)),
-            gitignore = parseIgnore(fs.readFileSync(gitignorePath));
+            npmignore = parseIgnore(fs.readFileSync(npmignorePath)).patterns,
+            gitignore = parseIgnore(fs.readFileSync(gitignorePath)).patterns;
 
         describe(gitignorePath, function () {
             it('should exist', function (done) {
@@ -131,7 +131,7 @@ describe('project repository', function () {
 
         it('should have .gitignore coverage to be a subset of .npmignore coverage', function () {
             // eslint-disable-next-line arrow-body-style, arrow-parens
-            const intersection = [gitignore, npmignore].reduce((a, b) => a.filter(c => b.includes(c)));
+            const intersection = [gitignore, npmignore].reduce((a, b) => a.filter((c) => b.includes(c)));
 
             expect(intersection).to.eql(gitignore);
         });
