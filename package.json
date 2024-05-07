@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "browser": {
-    "./lib/bridge-worker.js": "./lib/bridge-worker.browser.js"
+    "./lib/worker.js": "./lib/worker.browser.js"
   },
   "homepage": "https://github.com/postmanlabs/uvm#readme",
   "bugs": {
