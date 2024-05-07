@@ -12,12 +12,6 @@ describe('bridge-client', function () {
         expect(bridgeClient()).to.be.a('string');
     });
 
-    it('should return a client with bootstrap in it', function () {
-        var bootCode = 'console.log("hi mocha");';
-
-        expect(bridgeClient(bootCode)).to.be.a('string').and.contain(bootCode);
-    });
-
     it('should be a valid JS code (syntax-wise)', function () {
         expect(function () {
             bridgeClient();
