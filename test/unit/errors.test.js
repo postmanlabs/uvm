@@ -1,5 +1,6 @@
 const uvm = require('../../lib'),
-    expect = require('chai').expect;
+    expect = require('chai').expect,
+    isNode = (typeof window === 'undefined');
 
 describe('uvm errors', function () {
     it('should raise an error if sandbox disconnect is somehow broken', function (done) {
@@ -14,7 +15,7 @@ describe('uvm errors', function () {
             done();
         });
 
-        context.disconnect(null);
+        context.disconnect();
     });
 
     it('should dispatch cyclic object', function (done) {
@@ -109,67 +110,130 @@ describe('uvm errors', function () {
                 throw new Error('loopback callback was unexpected post disconnection');
             });
 
-            context.disconnect();
-            context.dispatch('loopback', 'this never returns');
+            context.disconnect(() => {
+                context.dispatch('loopback', 'this never returns');
+            });
         });
     });
 
-    it('should trigger uncaughtException on bootCode error from sync context and not terminate', function (done) {
-        uvm.spawn({
-            bootCode: `
-                bridge.on('uncaughtException', function (err) {
-                    bridge.dispatch('uncaughtException', err.message);
+    describe('when uncaughtException is handled', function () {
+        it('should only trigger uncaughtException event on synchronous error and not terminate', function (done) {
+            uvm.spawn({
+                bootCode: `
+                    bridge.on('uncaughtException', function (err) {
+                        bridge.dispatch('uncaughtException', err.message);
+                    });
+                    bridge.on('ping', function () {
+                        bridge.dispatch('pong');
+                    });
+                    throw new Error('error in bootCode');
+                `
+            }, function (err, context) {
+                expect(err).to.be.null;
+                context.on('error', done);
+                context.on('uncaughtException', function (error) {
+                    expect(error).to.include('error in bootCode');
+                    context.dispatch('ping');
                 });
-                bridge.on('ping', function () {
-                    bridge.dispatch('pong');
+                context.on('exit', function () {
+                    done(new Error('exit should not be triggered'));
                 });
-                throw new Error('error in bootCode');
-                bridge.dispatch('loopback', 'this should never happen');
-            `
-        }, function (err, context) {
-            expect(err).to.be.null;
 
-            context.on('loopback', function (data) {
-                done(new Error(data));
+                context.on('pong', done);
             });
+        });
 
-            context.on('uncaughtException', function (error) {
-                expect(error).to.include('error in bootCode');
-                context.dispatch('ping');
+        it('should only trigger uncaughtException event on asynchronous error and not terminate', function (done) {
+            uvm.spawn({
+                bootCode: `
+                    bridge.on('uncaughtException', function (err) {
+                        bridge.dispatch('uncaughtException', err.message);
+                    });
+                    bridge.on('ping', function () {
+                        bridge.dispatch('pong');
+                    });
+                    async function main () {
+                        await Promise.reject(new Error('error in bootCode'));
+                    }
+                    main();
+                `
+            }, function (err, context) {
+                expect(err).to.be.null;
+                context.on('uncaughtException', function (error) {
+                    expect(error).to.include('error in bootCode');
+                    context.dispatch('ping');
+                });
+                context.on('exit', function () {
+                    done(new Error('exit should not be triggered'));
+                });
+                context.on('pong', done);
             });
-
-            context.on('pong', done);
         });
     });
 
-    it('should trigger uncaughtException on bootCode error from async context and not terminate', function (done) {
-        uvm.spawn({
-            bootCode: `
-                bridge.on('uncaughtException', function (err) {
-                    bridge.dispatch('uncaughtException', err.message);
+    // FIX: On web the test runner exits before the `exit` event with an error, causing the test to fail.
+    (isNode ? describe : describe.skip)('when uncaughtException is not handled', function () {
+        it('should only trigger error event on synchronous error and terminate', function (done) {
+            uvm.spawn({
+                debug: true,
+                bootCode: `
+                    setTimeout(function () {
+                        bridge.dispatch('ping');
+                    }, 1000);
+
+                    throw new Error ('error in bootCode');
+                `
+            }, function (err, context) {
+                expect(err).to.be.null;
+                context.on('uncaughtException', function () {
+                    done(new Error('uncaughtException should not be triggered'));
                 });
-                bridge.on('ping', function () {
-                    bridge.dispatch('pong');
+                context.on('ping', () => {
+                    done(new Error('ping should not be triggered'));
                 });
-                async function main () {
-                    await Promise.reject(new Error('error in bootCode'));
-                    bridge.dispatch('loopback', 'this should never happen');
-                }
-                main();
-            `
-        }, function (err, context) {
-            expect(err).to.be.null;
-
-            context.on('loopback', function (data) {
-                done(new Error(data));
+                context.on('error', function (error) {
+                    if (isNode) {
+                        expect(error).to.have.property('message', 'error in bootCode');
+                    }
+                    else {
+                        expect(error).to.have.property('message', 'Uncaught Error: error in bootCode');
+                    }
+                });
+                context.on('exit', done);
             });
+        });
 
-            context.on('uncaughtException', function (error) {
-                expect(error).to.include('error in bootCode');
-                context.dispatch('ping');
+        it('should only trigger error event on asynchronous error and terminate', function (done) {
+            uvm.spawn({
+                bootCode: `
+                    setTimeout(function () {
+                        bridge.dispatch('ping');
+                    }, 1000);
+
+                    async function main () {
+                        await Promise.reject(new Error('error in bootCode'));
+                    }
+
+                    main();
+                `
+            }, function (err, context) {
+                expect(err).to.be.null;
+                context.on('uncaughtException', function () {
+                    done(new Error('uncaughtException should not be triggered'));
+                });
+                context.on('ping', () => {
+                    done(new Error('ping should not be triggered'));
+                });
+                context.on('error', function (error) {
+                    if (isNode) {
+                        expect(error).to.have.property('message', 'error in bootCode');
+                    }
+                    else {
+                        expect(error).to.have.property('message', 'Uncaught Error: error in bootCode');
+                    }
+                });
+                context.on('exit', done);
             });
-
-            context.on('pong', done);
         });
     });
 });
