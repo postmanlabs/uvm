@@ -171,7 +171,7 @@ describe('uvm errors', function () {
         });
     });
 
-    // FIX: On web the test runner exits before the `exit` event with an error, causing the test to fail.
+    // FIXME: On web the test runner exits before the `exit` event with an error, causing the test to fail.
     (isNode ? describe : describe.skip)('when uncaughtException is not handled', function () {
         it('should only trigger error event on synchronous error and terminate', function (done) {
             uvm.spawn({
