@@ -1,10 +1,9 @@
 module.exports = `
-(function (self) {
-    var init = function (e) {
-        self.removeEventListener('message', init);
+(function (parentPort) {
+    var init = function (m) {
         // eslint-disable-next-line no-eval
-        (e && e.data && (typeof e.data.__init_uvm === 'string')) && eval(e.data.__init_uvm);
+        m && m.__init_uvm && (typeof m.__init_uvm === 'string') && eval(m.__init_uvm);
     };
-    self.addEventListener('message', init);
-}(self));
+    parentPort.once('message', init);
+}(require('worker_threads').parentPort));
 `;

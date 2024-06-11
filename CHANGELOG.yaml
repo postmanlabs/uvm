@@ -1,4 +1,6 @@
 unreleased:
+  new feature:
+    - GH-666 Replaced Node VM with Worker threads
   breaking changes:
     - GH-668 Dropped support for Node < v16
   chores:
