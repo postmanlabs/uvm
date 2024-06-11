@@ -16,8 +16,7 @@ describe('uvm', function () {
         });
         vm.on('disconnect', () => {
             expect(loopbackData).to.eql([1, 2, 3, 4]);
-            vm.disconnect();
-            done();
+            vm.disconnect(done);
         });
 
         // dispatch before connect
@@ -162,20 +161,19 @@ describe('uvm', function () {
                 context.on('loopback', (data) => { loopbackData.push(data); });
                 context.on('disconnect', () => {
                     expect(loopbackData).to.eql([1, 2]);
-                    context.disconnect();
-                    done();
+                    context.disconnect(done);
                 });
 
                 context.dispatch('loopback', 1);
 
                 setTimeout(() => {
-                    context.disconnect();
-
-                    // reconnect
-                    context.connect({ bootCode }, (err) => {
-                        if (err) { return done(err); }
-                        context.dispatch('loopback', 2);
-                        context.dispatch('disconnect');
+                    context.disconnect(() => {
+                        // reconnect
+                        context.connect({ bootCode }, (err) => {
+                            if (err) { return done(err); }
+                            context.dispatch('loopback', 2);
+                            context.dispatch('disconnect');
+                        });
                     });
                 }, 100);
             });
@@ -186,8 +184,7 @@ describe('uvm', function () {
 
             vm.on('loopback', (data) => {
                 expect(data).to.equal('first');
-                vm.disconnect();
-                done();
+                vm.disconnect(done);
             });
 
             vm.connect({

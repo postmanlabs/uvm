@@ -1,6 +1,6 @@
-# UVM [![Build Status](https://travis-ci.com/postmanlabs/uvm.svg?branch=develop)](https://travis-ci.com/postmanlabs/uvm) [![codecov](https://codecov.io/gh/postmanlabs/uvm/branch/develop/graph/badge.svg)](https://codecov.io/gh/postmanlabs/uvm)
+# UVM [![CI](https://github.com/postmanlabs/uvm/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/postmanlabs/uvm/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/postmanlabs/uvm/branch/develop/graph/badge.svg)](https://codecov.io/gh/postmanlabs/uvm)
 
-Module that exposes an event emitter to send data across contexts ([VM](https://nodejs.org/api/vm.html) in Node.js and [Web Workers](https://www.w3.org/TR/workers/) in browser).
+Module that exposes an event emitter to send data across contexts ([Worker threads](https://nodejs.org/api/worker_threads.html) in Node.js and [Web Workers](https://www.w3.org/TR/workers/) in browser).
 
 ## Installation
 UVM can be installed using NPM or directly from the git repository within your NodeJS projects. If installing from NPM, the following command installs the module and saves in your `package.json`

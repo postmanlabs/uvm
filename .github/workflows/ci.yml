@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - '*.md'
+  pull_request:
+    branches: [$default-branch]
+  schedule:
+    - cron: '0 12 * * 0'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      - name: Run lint tests
+        run: npm run test-lint
+
+  browser-tests:
+    name: Browser Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      - name: Run browser tests
+        run: npm run test-browser
+
+  tests:
+    name: Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [16, 18]
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - coverage: true
+            node-version: 20
+            os: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install
+        run: npm ci
+
+      - name: Run system tests
+        run: npm run test-system
+
+      - name: Run unit tests
+        run: npm run test-unit
+
+      - if: ${{ matrix.coverage }}
+        name: Upload coverage
+        run: npm run codecov -- -c -Z -f .coverage/coverage-final.json -F unit

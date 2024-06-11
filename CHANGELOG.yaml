@@ -1,3 +1,14 @@
+3.0.0:
+  date: 2024-06-11
+  new feature:
+    - GH-666 Replaced Node VM with Worker threads
+  breaking changes:
+    - GH-668 Dropped support for Node < v16
+  chores:
+    - GH-667 Added GitHub CI and remove Travis
+    - Updated ESLint rules
+    - Updated dependencies
+
 2.1.1:
   date: 2022-07-12
   fixed bugs:
