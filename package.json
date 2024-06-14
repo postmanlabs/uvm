@@ -41,7 +41,7 @@
     "@stylistic/eslint-plugin-js": "^1.8.0",
     "benchmark": "^2.1.4",
     "browserify": "^17.0.0",
-    "chai": "^4.4.1",
+    "chai": "^5.1.1",
     "chalk": "^4.1.2",
     "editorconfig": "^2.0.0",
     "eslint": "^8.57.0",
