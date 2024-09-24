@@ -1,4 +1,6 @@
 unreleased:
+  fixed bugs:
+    - GH-711 Fixed an issue where boot code was not being garbage collected
   chores:
     - GH-710 Refactor worker interface to be node alike
 
