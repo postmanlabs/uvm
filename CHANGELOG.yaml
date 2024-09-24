@@ -1,4 +1,6 @@
 unreleased:
+  breaking changes:
+    - GH-715 Dropped support for Node < v18
   fixed bugs:
     - GH-711 Fixed an issue where boot code was not being garbage collected
   chores:
