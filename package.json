@@ -1,6 +1,6 @@
 {
   "name": "uvm",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Universal Virtual Machine for Node and Browser",
   "author": "Postman Inc.",
   "license": "Apache-2.0",
