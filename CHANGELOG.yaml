@@ -1,3 +1,12 @@
+4.0.0:
+  date: 2024-09-25
+  breaking changes:
+    - GH-715 Dropped support for Node < v18
+  fixed bugs:
+    - GH-711 Fixed an issue where boot code was not being garbage collected
+  chores:
+    - GH-710 Refactor worker interface to be node alike
+
 3.0.0:
   date: 2024-06-11
   new feature:
