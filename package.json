@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@postman/shipit": "^0.4.0",
-    "@stylistic/eslint-plugin-js": "^1.8.0",
+    "@stylistic/eslint-plugin-js": "^2.10.1",
     "benchmark": "^2.1.4",
     "browserify": "^17.0.0",
     "chai": "^4.4.1",
