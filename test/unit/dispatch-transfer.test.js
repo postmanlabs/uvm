@@ -109,6 +109,34 @@ describe('uvm dispatchTransfer', function () {
         context.dispatch('count', 'a', 'b');
     });
 
+    it('should throw when buffers is not an Array', function () {
+        expect(() => { context.dispatchTransfer(Buffer.from([1, 2]), 'echo'); })
+            .to.throw(TypeError, 'uvm: dispatchTransfer expects an Array of buffers');
+    });
+
+    it('should throw when a buffer cannot be transferred', function () {
+        const buffer = new Uint8Array([1]);
+
+        context.dispatchTransfer([buffer], 'echo');
+        expect(() => { context.dispatchTransfer([buffer], 'echo'); }).to.throw();
+    });
+
+    it('should replay every queued message when one of them fails', function (done) {
+        const vm = new uvm(),
+            errors = [];
+
+        vm.on('error', (err) => { errors.push(err.message); });
+        vm.on('echo', (args) => {
+            expect(args).to.eql(['after']);
+            expect(errors).to.have.lengthOf(1);
+            vm.disconnect(done);
+        });
+
+        vm.dispatch('echo', 10n); // BigInt cannot be serialized
+        vm.dispatchTransfer([new Uint8Array([1])], 'echo', 'after');
+        vm.connect({ bootCode }, (err) => { err && done(err); });
+    });
+
     it('should emit an error when dispatching after disconnect', function (done) {
         const vm = context;
 
