@@ -114,6 +114,11 @@ describe('uvm dispatchTransfer', function () {
             .to.throw(TypeError, 'uvm: dispatchTransfer expects an Array of buffers');
     });
 
+    it('should throw for an entry that is not binary data', function () {
+        expect(() => { context.dispatchTransfer(['hello'], 'echo'); })
+            .to.throw(TypeError, 'uvm: dispatchTransfer expects ArrayBuffers or ArrayBuffer views');
+    });
+
     it('should throw when a buffer cannot be transferred', function () {
         const buffer = new Uint8Array([1]);
 
@@ -137,17 +142,21 @@ describe('uvm dispatchTransfer', function () {
         vm.connect({ bootCode }, (err) => { err && done(err); });
     });
 
-    it('should emit an error when dispatching after disconnect', function (done) {
-        const vm = context;
+    it('should throw for a transfer and emit an error for a dispatch after disconnect', function (done) {
+        const vm = context,
+            errors = [];
 
         context = null;
         vm.disconnect(() => {
-            vm.on('error', (err) => {
-                expect(err.message).to.equal('uvm: unable to dispatch "echo" post disconnection.');
-                done();
-            });
+            vm.on('error', (err) => { errors.push(err.message); });
 
-            vm.dispatchTransfer([new Uint8Array([1])], 'echo');
+            expect(() => { vm.dispatchTransfer([new Uint8Array([1])], 'echo'); })
+                .to.throw('uvm: unable to dispatch "echo" post disconnection.');
+            expect(errors, 'a transfer does not emit').to.eql([]);
+
+            vm.dispatch('echo');
+            expect(errors).to.eql(['uvm: unable to dispatch "echo" post disconnection.']);
+            done();
         });
     });
 });
