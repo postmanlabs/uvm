@@ -1,8 +1,8 @@
 unreleased:
   new features:
     - >-
-      Added `dispatchTransfer` to move binary buffers to the other end of the
-      bridge instead of copying them
+      Added `dispatchTransfer` to move binary buffers to the worker
+      instead of copying them
 
 4.0.2:
   date: 2026-07-27
